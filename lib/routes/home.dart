@@ -22,11 +22,9 @@ class Home extends ConsumerWidget {
     final String _fileName = ref.watch(filenameProvider);
     final String _cid = ref.watch(cidProvider);
 
-    const String _cache = "cached_sauces.csv";
-
     Future<void> _init() async {
       // Load file
-      await FileFuns().csvToRef(_cache, ref);
+      await FileFuns().csvToRef(cacheFileName, ref);
     }
 
     _init();
@@ -36,7 +34,7 @@ class Home extends ConsumerWidget {
       String _dataString = "$_time,$name,$cid";
       Sauce _newSauce = Sauce(epoch: _time, filename: name, cid: cid);
       ref.read(sauceProvider.notifier).addSauce(_newSauce);
-      await FileFuns().autoAppend(_cache, _dataString);
+      await FileFuns().autoAppend(cacheFileName, _dataString);
     }
 
     void _select() async {
@@ -46,7 +44,6 @@ class Home extends ConsumerWidget {
     void _upload() async {
       ref.watch(cidProvider.state).state = "Please wait...";
       try {
-        // final bearer = dotenv.get('BEARER');
         final _file = ref.watch(fileProvider);
         final _dataString = await FileFuns().openFileString(_file);
         final _fileType = _file.split('.').last;
@@ -105,7 +102,7 @@ class Home extends ConsumerWidget {
     }
 
     void _clearList() async {
-      await FileFuns().resetFile(_cache, ref);
+      await FileFuns().resetFile(cacheFileName, ref);
       FilePicker.platform.clearTemporaryFiles().then((result) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

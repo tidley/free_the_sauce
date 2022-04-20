@@ -14,14 +14,13 @@ class LoginScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final StateController<String> apiKey = ref.watch(apiKeyProvider.notifier);
-    AsyncValue<String> apiKey2 = ref.watch(apiKeyProviderAsync);
+    AsyncValue<String> apiKey = ref.watch(apiKeyProviderAsync);
 
     final TextEditingController apiController =
-        TextEditingController(text: apiKey.state);
+        TextEditingController();
 
-    return apiKey2.when(
-        data: (apiKey2) {
+    return apiKey.when(
+        data: (apiKey) {
           return Scaffold(
             appBar: AppBar(
               title: const Text('Sign In'),
@@ -48,10 +47,14 @@ class LoginScreen extends ConsumerWidget {
                       ),
                       onPressed: () {
                         print(apiController.text);
-                        apiKey.state = apiController.text;
+                        apiKey = apiController.text;
                         FileFuns()
                             .writeFile(apiFileNameConst, apiController.text);
-                        Navigator.pushNamed(context, '/home');
+                        Navigator.pushNamed(
+                          context,
+                          '/home',
+                          arguments: {apiKey: apiKey},
+                        );
                       },
                     )),
                 Row(
