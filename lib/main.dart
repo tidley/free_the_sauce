@@ -23,9 +23,6 @@ class MyApp extends ConsumerWidget {
 
     return apiKey.when(
       data: (apiKey) {
-        print("apiKey");
-        print(apiKey);
-        print("apiKey");
         return MaterialApp(
           theme: ThemeData.dark(),
           title: appTitle,

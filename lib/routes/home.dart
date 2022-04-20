@@ -14,21 +14,13 @@ import 'package:flutter_nft_storage/constants/constants.dart';
 import 'package:flutter_nft_storage/widgets/sauce_list.dart';
 
 class Home extends ConsumerWidget {
-  const Home({Key? key, required String? apiKey}) : super(key: key);
+  final String apiKey;
+  const Home({Key? key, required this.apiKey}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String? apiKey1 =
-        ModalRoute.of(context)!.settings.arguments.toString();
-    final String apiKey = apiKey1 ?? "";
-
-    print("apiKey Home");
-    print(apiKey1.toString());
-    print("apiKey apiKey Home");
-
     final String _fileName = ref.watch(filenameProvider);
     final String _cid = ref.watch(cidProvider);
-    // final String _apiKey = ref.watch(apiKeyProvider);
 
     const String _cache = "cached_sauces.csv";
 
