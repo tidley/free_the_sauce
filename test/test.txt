@@ -1,0 +1,31 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'dart:io';
+
+import 'package:flutter_nft_storage/utils/utils.dart';
+
+String bearer = "";
+const cid = 'bafkreidkj7uqjdvtsuz6ipvg4qmphmzu4kowv56p2rawt4tianzaikgkcu';
+// bafkreiaetfaugd66cyn4izn5kg2xakpqovdat432otzj5e2bdamtwx6fce
+void main() async {
+  setUp(() {
+    dotenv.testLoad(fileInput: File('assets/.env').readAsStringSync());
+    bearer = dotenv.env['BEARER'] ??= "";
+  });
+  // test('Checking connection to nft.storage', () async {
+  //   String response = await ApiCalls().getStatus(bearer, cid);
+  //   expect(response.contains('deals'), true);
+  // });
+  // test('Uploading string to nft.storage', () async {
+  //   const body = '<file contents here a>';
+  //   String response = await ApiCalls().upload(bearer, body);
+  //   expect(response.contains(':true'), true);
+  // });
+  test('Uploading file to nft.storage', () async {
+    fileFuns().openFile(null);
+  });
+  // test('Retrieving from nft.storage', () async {
+  //   String response = await ApiCalls().getData(bearer, cid);
+  //   expect(response, '<file contents here>');
+  // });
+}
