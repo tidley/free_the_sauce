@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 
@@ -20,28 +21,33 @@ class Sauce {
   }
 }
 
-class SauceNotifier extends StateNotifier<List<Sauce>> {
-  SauceNotifier() : super([]);
 
-void resetSauce() {
-    state = [];
-  }
 
-  void addSauce(Sauce sauce) {
-    state = [...state, sauce];
-  }
 
-  void removeSauce(String _cid) {
-    state = [
-      for (final sauce in state)
-        if (sauce.cid != _cid) sauce,
-    ];
-  }
 
-  void nameModify(String _cid, String _newName) {
-    state = [
-      for (final sauce in state)
-        if (sauce.cid == _cid) sauce.copyWith(filename: _newName) else sauce,
-    ];
-  }
-}
+
+// class NewFileNotifier extends StateNotifier<List<String>> {
+//   NewFileNotifier() : super([]);
+
+// void resetSauce() {
+//     state = [];
+//   }
+
+//   void addSauce(String sauce) {
+//     state = [...state, sauce];
+//   }
+
+//   void removeSauce(String _cid) {
+//     state = [
+//       for (final sauce in state)
+//         if (sauce.cid != _cid) sauce,
+//     ];
+//   }
+
+//   void nameModify(String _cid, String _newName) {
+//     state = [
+//       for (final sauce in state)
+//         if (sauce.cid == _cid) sauce.copyWith(filename: _newName) else sauce,
+//     ];
+//   }
+// }

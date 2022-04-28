@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_nft_storage/constants/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ButtonUpload extends ConsumerWidget {
-  const ButtonUpload({Key? key}) : super(key: key);
+class ScreenButtons extends ConsumerWidget {
+  const ScreenButtons({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,11 +16,11 @@ class ButtonUpload extends ConsumerWidget {
   }
 }
 
-class ButtonBox extends ConsumerWidget {
+class WideButton extends ConsumerWidget {
   final String text;
   final Function onpressed;
 
-  const ButtonBox({Key? key, required this.text, required this.onpressed})
+  const WideButton({Key? key, required this.text, required this.onpressed})
       : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,7 +32,11 @@ class ButtonBox extends ConsumerWidget {
           onPressed: () {
             onpressed();
           },
-          child: Text(text)),
+        child: Text(
+          text,
+          style: btnText,
+        ),
+      ),
     );
   }
 }

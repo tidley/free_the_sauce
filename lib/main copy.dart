@@ -88,9 +88,9 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
     final file = _paths!.map((e) => e.path).toList()[0].toString();
     final dataString = await FileFuns().openFileString(file);
     final fileType = file.split('.').last;
-    Map<String, dynamic> response =
-        await ApiCalls().upload(bearer, dataString, fileType: fileType);
-    final cidDynamic = response["value"]["cid"];
+    // Map<String, dynamic> response =
+    //     await ApiCalls().upload(bearer, dataString, fileType: fileType);
+    final cidDynamic = "response";
     print(cidDynamic);
     final filename = file.split('/').last;
     print("filename: $filename");

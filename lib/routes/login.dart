@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_nft_storage/utils/utils.dart';
+import 'package:flutter_nft_storage/widgets/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -16,8 +17,16 @@ class LoginScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     AsyncValue<String> apiKey = ref.watch(apiKeyProviderAsync);
 
-    final TextEditingController apiController =
-        TextEditingController();
+    final TextEditingController apiController = TextEditingController();
+
+    void _login() async {
+      FileFuns().writeFile(apiFileNameConst, apiController.text);
+      Navigator.pushNamed(
+        context,
+        '/home',
+        arguments: {apiKey: apiController.text},
+      );
+    }
 
     return apiKey.when(
         data: (apiKey) {
@@ -40,32 +49,13 @@ class LoginScreen extends ConsumerWidget {
                 Container(
                     height: 50,
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: ElevatedButton(
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () {
-                        print(apiController.text);
-                        apiKey = apiController.text;
-                        FileFuns()
-                            .writeFile(apiFileNameConst, apiController.text);
-                        Navigator.pushNamed(
-                          context,
-                          '/home',
-                          arguments: {apiKey: apiKey},
-                        );
-                      },
-                    )),
+                  child: WideButton(text: 'Login', onpressed: _login),
+                ),
                 Row(
                   children: <Widget>[
-                    const Text(
-                      'New here?',
-                      style: TextStyle(height: 1.6),
-                    ),
                     TextButton(
                       child: const Text(
-                        'Register',
+                        'New here?',
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () => launch('https://nft.storage/login/'),

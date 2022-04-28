@@ -2,25 +2,28 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
 import 'package:android_path_provider/android_path_provider.dart';
+import 'package:flutter_nft_storage/constants/constants.dart';
 import 'package:flutter_nft_storage/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
+import 'package:tar/tar.dart';
+import 'package:path/path.dart' as p;
 
 import 'package:flutter_nft_storage/classes/classes.dart';
 
 class FileFuns {
   Future<Uint8List> openFileUint8(String? filename) async {
-    final _fn = filename ??= 'test/test.txt';
-    Uint8List uint8list = Uint8List.fromList(File(_fn).readAsBytesSync());
+    final _filename = filename ??= 'test/test.txt';
+    Uint8List uint8list = Uint8List.fromList(File(_filename).readAsBytesSync());
     print("done");
     return uint8list;
   }
 
   // https://www.fluttercampus.com/guide/182/encode-decode-path-file-bytes-base64-in-dart-flutter/
   Future<String> openFileString(String? filename) async {
-    final _fn = filename ??= 'test/test.txt';
-    File imgfile = File(_fn);
+    final String _filename = filename ??= 'test/test.txt';
+    File imgfile = File(_filename);
     Uint8List imgbytes = await imgfile.readAsBytes();
     String bs4str = base64.encode(imgbytes);
     return bs4str;
@@ -121,8 +124,6 @@ class FileFuns {
               item,
             );
       }
-    } else {
-      print("Skipp");
     }
   }
 
@@ -140,11 +141,64 @@ class FileFuns {
         : _cid;
     String _downloadsPath = await AndroidPathProvider.downloadsPath;
 
-    File _sauce =
-        await File('$_downloadsPath/$cid.${_sourceData.extension}').create();
+    File _sauce = await File(
+            '$_downloadsPath/${_sourceData.filename}.${_sourceData.extension}')
+        .create();
     Uint8List _decodedbytes = base64.decode(_sourceData.rawData);
 
     return await _sauce.writeAsBytes(_decodedbytes);
+  }
+
+  void appendSauce(String _name, String _cid, WidgetRef ref) async {
+    final String _time = DateTime.now().toString().substring(0, 19);
+    final String _dataString = "$_time,$_name,$_cid";
+    final Sauce _newSauce = Sauce(epoch: _time, filename: _name, cid: _cid);
+    ref.read(sauceProvider.notifier).addSauce(_newSauce);
+    await FileFuns().autoAppend(CACHEDFILES, _dataString);
+  }
+
+  String compressSauce(String originalString) {
+    final List<int> enCodedString = utf8.encode(originalString);
+    final List<int> gZipString = gzip.encode(enCodedString);
+    final String base64String = base64.encode(gZipString);
+    return base64String;
+  }
+
+  String decompressSauce(String base64String) {
+    final Uint8List decodeBase64Json = base64.decode(base64String);
+    final List<int> decodegZipString = gzip.decode(decodeBase64Json);
+    final String originalString = utf8.decode(decodegZipString);
+    return originalString;
+  }
+
+  Stream<TarEntry> compressSauces(WidgetRef ref) async* {
+    final root = Directory.current;
+    List<File> sauces = ref.read(filesProvider.notifier).state;
+    for (final File entry in sauces) {
+      final name = p.relative(entry.path, from: root.path);
+
+      final stat = entry.statSync();
+
+      yield TarEntry(
+        TarHeader(
+          name: name,
+          typeFlag: TypeFlag.reg, // It's a regular file
+          // Apart from that, copy over meta information
+          mode: stat.mode,
+          modified: stat.modified,
+          accessed: stat.accessed,
+          changed: stat.changed,
+          // This assumes that the file won't change until we're writing it into
+          // the archive later, since then the size might be wrong. It's more
+          // efficient though, since the tar writer would otherwise have to buffer
+          // everything to find out the size.
+          size: stat.size,
+        ),
+        // Use entry.openRead() to obtain an input stream for the file that the
+        // writer will use later.
+        entry.openRead(),
+      );
+    }
   }
 }
 
