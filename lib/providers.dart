@@ -19,6 +19,10 @@ class FilesNotifier extends StateNotifier<List<File>> {
     state = [];
   }
 
+void addFile(File file) {
+    state = [...state, file];
+  }
+
   void refreshFiles(List<File> files) {
     state = [];
     for (final file in files) {

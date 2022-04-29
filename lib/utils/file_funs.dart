@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
-import 'package:android_path_provider/android_path_provider.dart';
 import 'package:flutter_nft_storage/constants/constants.dart';
 import 'package:flutter_nft_storage/providers.dart';
+import 'package:flutter_nft_storage/utils/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
@@ -56,22 +56,18 @@ class FileFuns {
     return directory.path;
   }
 
-  Future<File> fileOpen(String? filename) async {
+  Future<File> fileLocalOpen(String? filename) async {
     final path = await FileFuns().getLocalPath();
     return File('$path/$filename');
   }
 
-  Future<File> fileWrite(File file, String data) async {
-    return file.writeAsString(data);
-  }
-
   Future<void> writeFile(String filename, String data) async {
-    File file = await FileFuns().fileOpen(filename);
-    await FileFuns().fileWrite(file, data);
+    File file = await FileFuns().fileLocalOpen(filename);
+    await file.writeAsString(data);
   }
 
   Future<String> readFile(String filename) async {
-    File file = await FileFuns().fileOpen(filename);
+    File file = await FileFuns().fileLocalOpen(filename);
     return await FileFuns().fileRead(file);
   }
 
@@ -88,18 +84,18 @@ class FileFuns {
   }
 
   Future<File> appendFile(File file, String data) async {
-    String contents = (await FileFuns().fileRead(file)) + "\r\n$data";
-    return await FileFuns().fileWrite(file, contents);
+    String _data = (await FileFuns().fileRead(file)) + "\r\n$data";
+    return await file.writeAsString(_data);
   }
 
   Future<void> autoAppend(String? filename, String data) async {
-    File file = await FileFuns().fileOpen(filename);
+    File file = await FileFuns().fileLocalOpen(filename);
     await FileFuns().appendFile(file, data);
   }
 
   Future<List<Sauce>> csvToList(String filename) async {
     List<Sauce> sauceList = [];
-    File file = await FileFuns().fileOpen(filename);
+    File file = await FileFuns().fileLocalOpen(filename);
     List<String> lines = (await FileFuns().fileRead(file)).split('\r\n');
     for (var sauce in lines) {
       List<String> _bits = sauce.split(',');
@@ -128,8 +124,8 @@ class FileFuns {
   }
 
   Future<void> resetFile(String filename, WidgetRef ref) async {
-    File file = await FileFuns().fileOpen(filename);
-    await FileFuns().fileWrite(file, 'epoch,filename,cid');
+    File file = await FileFuns().fileLocalOpen(filename);
+    await file.writeAsString('epoch,filename,cid');
     ref.read(sauceProvider.notifier).resetSauce();
   }
 
@@ -139,7 +135,7 @@ class FileFuns {
     final cid = _cid == ""
         ? "bafybeifb6juaycok634fh2yu7ucuq7gnkagwi5yisaa4z77q7jkxwgsan4"
         : _cid;
-    String _downloadsPath = await AndroidPathProvider.downloadsPath;
+    String _downloadsPath = await DirInfo().downloadsPath();
 
     File _sauce = await File(
             '$_downloadsPath/${_sourceData.filename}.${_sourceData.extension}')
@@ -154,7 +150,7 @@ class FileFuns {
     final String _dataString = "$_time,$_name,$_cid";
     final Sauce _newSauce = Sauce(epoch: _time, filename: _name, cid: _cid);
     ref.read(sauceProvider.notifier).addSauce(_newSauce);
-    await FileFuns().autoAppend(CACHEDFILES, _dataString);
+    await FileFuns().autoAppend(cachedFiles, _dataString);
   }
 
   String compressSauce(String originalString) {
@@ -169,6 +165,18 @@ class FileFuns {
     final List<int> decodegZipString = gzip.decode(decodeBase64Json);
     final String originalString = utf8.decode(decodegZipString);
     return originalString;
+  }
+
+  Future<bool> saveLocalZip(List<File> files) async {
+    final String _localPath = await FileFuns().getLocalPath();
+    bool isOk =
+        await Archive().compressFiles(files, _localPath + '/' + tempZip);
+    return isOk;
+  }
+
+  Future<String> openLocalZip() async {
+    final String _localPath = await FileFuns().getLocalPath();
+    return await FileFuns().readFile(_localPath + '/' + tempZip);
   }
 
   Stream<TarEntry> compressSauces(WidgetRef ref) async* {

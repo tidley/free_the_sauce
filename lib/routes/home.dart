@@ -24,7 +24,7 @@ class Home extends ConsumerWidget {
 
     Future<void> _init() async {
       // Load file
-      await FileFuns().csvToRef(CACHEDFILES, ref);
+      await FileFuns().csvToRef(cachedFiles, ref);
     }
 
     _init();
@@ -34,7 +34,7 @@ class Home extends ConsumerWidget {
     //   String _dataString = "$_time,$_name,$_cid";
     //   Sauce _newSauce = Sauce(epoch: _time, filename: _name, cid: _cid);
     //   ref.read(sauceProvider.notifier).addSauce(_newSauce);
-    //   await FileFuns().autoAppend(CACHEDFILES, _dataString);
+    //   await FileFuns().autoAppend(cachedFiles, _dataString);
     // }
 
     void _select(bool _multi) async {
@@ -115,7 +115,7 @@ class Home extends ConsumerWidget {
     }
 
     void _clearList() async {
-      await FileFuns().resetFile(CACHEDFILES, ref);
+      await FileFuns().resetFile(cachedFiles, ref);
       FilePicker.platform.clearTemporaryFiles().then((result) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -174,13 +174,13 @@ class Home extends ConsumerWidget {
                           text: "Upload 1-by-1",
                           onpressed: () => {
                                 FilePrep()
-                                    .upload(true, apiKey, ref, _uploadFail),
+                                    .upload(false, apiKey, ref, _uploadFail),
                               }),
                       WideButton(
                           text: "Zip-upload",
                           onpressed: () => {
                                 FilePrep()
-                                    .upload(false, apiKey, ref, _uploadFail),
+                                    .upload(true, apiKey, ref, _uploadFail),
                               }),
                     ],
                   ),
