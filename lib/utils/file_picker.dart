@@ -65,6 +65,8 @@ class FilePrep {
         await FileFuns().saveLocalZip(_fileNameList);
         // Update target filename
         _fileNameList = [await FileFuns().localZipPath()];
+      } else {
+        print("Single file please");
       }
       for (var _fileName in _fileNameList) {
         // Get data

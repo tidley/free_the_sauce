@@ -10,18 +10,20 @@ class ApiCalls {
     var headers = {
       'Authorization': 'Bearer ' + bearer,
     };
-    var request =
+    http.Request request =
         http.Request('POST', Uri.parse('https://api.nft.storage/upload'));
     request.body =
         '{"filename":$filename",extension":"$extension","data":"$data"}';
+    print(request.body.toString());
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
+    
     if (response.statusCode == 200) {
       print("json.decode((await response.stream.bytesToString()).trim())");
-
       print(json.decode((await response.stream.bytesToString()).trim()));
       return await json.decode((await response.stream.bytesToString()).trim());
     } else {
+      print("Error in file upload");
       return await json.decode((response.reasonPhrase.toString()).trim());
     }
   }
@@ -30,7 +32,7 @@ class ApiCalls {
     var headers = {
       'Authorization': 'Bearer ' + bearer,
     };
-    var request =
+    http.Request request =
         http.Request('GET', Uri.parse('https://api.nft.storage/' + cid));
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();

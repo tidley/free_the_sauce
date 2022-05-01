@@ -23,6 +23,8 @@ class FileFuns {
   // https://www.fluttercampus.com/guide/182/encode-decode-path-file-bytes-base64-in-dart-flutter/
   Future<String> openFileString(String? filename) async {
     final String _filename = filename ??= 'test/test.txt';
+    print("_filename");
+    print(_filename);
     File imgfile = File(_filename);
     Uint8List imgbytes = await imgfile.readAsBytes();
     String bs4str = base64.encode(imgbytes);
@@ -152,8 +154,6 @@ class FileFuns {
     ref.read(sauceProvider.notifier).addSauce(_newSauce);
     await FileFuns().autoAppend(cachedFileList, _dataString);
   }
-
-
 
   Future<bool> saveLocalZip(List<String> filenames) async {
     return await Archive().compressFiles(filenames, await localZipPath());
