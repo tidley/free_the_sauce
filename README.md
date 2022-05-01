@@ -5,6 +5,18 @@ Short demo
 https://www.youtube.com/shorts/g-22A-N6_I8
 
 IMG_20220329_120715.jpg - bafkreictuxpjnldmh2dtay3eq4u5cwygbxqs2bjpset5l77ydfqxvx7qnm
+
+## Flow
+1. Home
+    1. _Select file..._ / _Select files..._
+        1. await SelectSauce().selectFiles(_multi, ref);
+            - `ref.read(filesProvider.notifier).addFile(File(_file));`
+            - `ref.watch(fileNameProvider.state).state = _fnames;`
+    1. _Upload 1-by-1_ / _Zip-upload_
+        1.FilePrep().upload(bool, apiKey, ref, _uploadFail),
+
+
+
 ## Todo
 1. Upload multiple  
     1. Seperately
@@ -16,6 +28,13 @@ IMG_20220329_120715.jpg - bafkreictuxpjnldmh2dtay3eq4u5cwygbxqs2bjpset5l77ydfqxv
 
 
 1. https://riverpod.dev/docs/providers/future_provider
+
+## Requirements
+1. To remove warning on debug startup edit line 275 in\
+ __/home/tom/.pub-cache/hosted/pub.dartlang.org/flutter_riverpod-1.0.3/lib/src/framework.dart__\
+`if (SchedulerBinding.instance!.schedulerPhase ==`\
+to\
+`if (SchedulerBinding.instance.schedulerPhase ==`
 
 ## Resources
 Share

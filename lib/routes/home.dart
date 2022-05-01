@@ -22,6 +22,7 @@ class Home extends ConsumerWidget {
     final String _fileName = ref.watch(fileNameProvider);
     final String _cid = ref.watch(cidProvider);
 
+    // There must be a better way than "_init()" ?
     Future<void> _init() async {
       // Load file
       await FileFuns().csvToRef(cachedFiles, ref);
@@ -38,7 +39,7 @@ class Home extends ConsumerWidget {
     // }
 
     void _select(bool _multi) async {
-      await SelectSauce().openFileExplorer(_multi, ref);
+      await SelectSauce().selectFiles(_multi, ref);
     }
 
     void _uploadFail() {
@@ -161,7 +162,7 @@ class Home extends ConsumerWidget {
                   ),
                   const SizedBox(
                     height: 10,
-                  ),              
+                  ),
                   Text(_fileName),
                   const SizedBox(
                     height: 10,
