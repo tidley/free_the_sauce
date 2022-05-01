@@ -70,7 +70,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
     });
   }
 
-  void _clearcachedFiles() {
+  void _clearcachedFileList() {
     FilePicker.platform.clearTemporaryFiles().then((result) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -200,7 +200,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
                         child: const Text("Pick folder"),
                       ),
                       ElevatedButton(
-                        onPressed: () => _clearcachedFiles(),
+                        onPressed: () => _clearcachedFileList(),
                         child: const Text("Clear temporary files"),
                       ),
                       ElevatedButton(

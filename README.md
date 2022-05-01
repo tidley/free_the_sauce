@@ -10,7 +10,7 @@ IMG_20220329_120715.jpg - bafkreictuxpjnldmh2dtay3eq4u5cwygbxqs2bjpset5l77ydfqxv
 1. Home
     1. _Select file..._ / _Select files..._
         1. await SelectSauce().selectFiles(_multi, ref);
-            - `ref.read(filesProvider.notifier).addFile(File(_file));`
+            - `ref.read(fileNameListProvider.notifier).add(_file);`
             - `ref.watch(fileNameProvider.state).state = _fnames;`
     1. _Upload 1-by-1_ / _Zip-upload_
         1.FilePrep().upload(bool, apiKey, ref, _uploadFail),
@@ -18,6 +18,7 @@ IMG_20220329_120715.jpg - bafkreictuxpjnldmh2dtay3eq4u5cwygbxqs2bjpset5l77ydfqxv
 
 
 ## Todo
+1. Upload broken = https://stackoverflow.com/questions/51396769/flutter-bad-state-stream-has-already-been-listened-to
 1. Upload multiple  
     1. Seperately
     1. As one (compress)

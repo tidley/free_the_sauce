@@ -150,8 +150,20 @@ class FileFuns {
     final String _dataString = "$_time,$_name,$_cid";
     final Sauce _newSauce = Sauce(epoch: _time, filename: _name, cid: _cid);
     ref.read(sauceProvider.notifier).addSauce(_newSauce);
-    await FileFuns().autoAppend(cachedFiles, _dataString);
+    await FileFuns().autoAppend(cachedFileList, _dataString);
   }
+
+
+
+  Future<bool> saveLocalZip(List<String> filenames) async {
+    return await Archive().compressFiles(filenames, await localZipPath());
+  }
+
+  Future<String> localZipPath() async {
+    return await FileFuns().getLocalPath() + '/' + tempZip;
+  }
+
+  //////
 
   String compressSauce(String originalString) {
     final List<int> enCodedString = utf8.encode(originalString);
@@ -165,13 +177,6 @@ class FileFuns {
     final List<int> decodegZipString = gzip.decode(decodeBase64Json);
     final String originalString = utf8.decode(decodegZipString);
     return originalString;
-  }
-
-  Future<bool> saveLocalZip(List<File> files) async {
-    final String _localPath = await FileFuns().getLocalPath();
-    bool isOk =
-        await Archive().compressFiles(files, _localPath + '/' + tempZip);
-    return isOk;
   }
 
   Future<String> openLocalZip() async {
