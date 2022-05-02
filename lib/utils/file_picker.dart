@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -71,15 +72,16 @@ class FilePrep {
       for (var _fileName in _fileNameList) {
         // Get data
         String _dataString = await FileFuns().openFileString(_fileName);
+        // Get / create name
         final String _cloudName = _combineZip
             ? DateTime.now().toString().substring(0, 19) + '.zip'
             : _fileName;
-        Future<Map<String, dynamic>> response = ApiCalls().uploadToCloud(
+        // Future<Map<String, dynamic>> response = ApiCalls().uploadToCloud(
+        //     apiKey, _dataString, _cloudName, _cloudName.split('.').last);
+        Future<String> response = ApiCalls().uploadToCloud(
             apiKey, _dataString, _cloudName, _cloudName.split('.').last);
-        print("await response.toString()");
         print(await response.toString());
-        final _cidDynamic = "response.value.cid";
-
+        final _cidDynamic = await json.decode(await response)["value"]["cid"];
         FileFuns().appendSauce(_fileName, _cidDynamic, ref);
       }
       ref.watch(cidProvider.state).state = "Upload complete";
