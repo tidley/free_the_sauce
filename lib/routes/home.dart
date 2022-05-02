@@ -115,7 +115,7 @@ class Home extends ConsumerWidget {
             child: Column(
           children: <Widget>[
             Container(
-              height: MediaQuery.of(context).size.height / 2.2,
+              height: MediaQuery.of(context).size.height / 1.85,
               child: ListView(
                 padding: const EdgeInsets.all(8),
                 children: [
@@ -142,9 +142,15 @@ class Home extends ConsumerWidget {
                   //     ],
                   //   ),
                   // ),
+                  Container(
+                    height: MediaQuery.of(context).size.height / 25,
+                    child: ListView(
+                      padding: const EdgeInsets.all(8),
+                      children: [
                   _fileNameList(),
-                  
-
+                      ],
+                    ),
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -195,13 +201,13 @@ class Home extends ConsumerWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  WideButton(
-                    text: "Test",
-                    onpressed: _test,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  // WideButton(
+                  //   text: "Test",
+                  //   onpressed: _test,
+                  // ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
                   WideButton(
                     text: "Clear",
                     onpressed: _clearList,
@@ -210,7 +216,7 @@ class Home extends ConsumerWidget {
               ),
             ),
             Container(
-              height: MediaQuery.of(context).size.height / 2.4,
+              height: MediaQuery.of(context).size.height / 2.8,
               child: ListView(
                 padding: const EdgeInsets.all(8),
                 children: const [

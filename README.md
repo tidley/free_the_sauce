@@ -2,25 +2,9 @@
 Let data be free.
 
 Short demo
-https://www.youtube.com/shorts/g-22A-N6_I8
-
-IMG_20220329_120715.jpg - bafkreictuxpjnldmh2dtay3eq4u5cwygbxqs2bjpset5l77ydfqxvx7qnm
-
-## Flow
-1. Home
-    1. _Select file..._ / _Select files..._
-        1. await SelectSauce().selectFiles(_multi, ref);
-            - `ref.read(fileNameListProvider.notifier).add(_file);`
-    1. _Upload 1-by-1_ / _Zip-upload_
-        1.FilePrep().upload(bool, apiKey, ref, _uploadFail),
-
-
+https://youtu.be/D29qNI0-hI0
 
 ## Todo
-1. Upload broken = https://stackoverflow.com/questions/51396769/flutter-bad-state-stream-has-already-been-listened-to
-1. Upload multiple  
-    1. Seperately
-    1. As one (compress)
 1. Remove files in app storage when clicking clean / remove
 1. Qr scan for nft.storage key
 1. Add 'Share all' buttons
