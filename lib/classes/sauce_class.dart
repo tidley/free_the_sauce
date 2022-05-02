@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,33 +20,9 @@ class Sauce {
   }
 }
 
+@immutable
+class SauceFile {
+  final String filename;
 
-
-
-
-
-// class NewFileNotifier extends StateNotifier<List<String>> {
-//   NewFileNotifier() : super([]);
-
-// void resetSauce() {
-//     state = [];
-//   }
-
-//   void addSauce(String sauce) {
-//     state = [...state, sauce];
-//   }
-
-//   void removeSauce(String _cid) {
-//     state = [
-//       for (final sauce in state)
-//         if (sauce.cid != _cid) sauce,
-//     ];
-//   }
-
-//   void nameModify(String _cid, String _newName) {
-//     state = [
-//       for (final sauce in state)
-//         if (sauce.cid == _cid) sauce.copyWith(filename: _newName) else sauce,
-//     ];
-//   }
-// }
+  const SauceFile({required this.filename});
+}

@@ -10,29 +10,32 @@ import 'package:flutter_nft_storage/constants/constants.dart';
 ////////////////////////// NEW PROVIDERS /////////////////////////
 //////////////////////////////////////////////////////////////////
 dynamic fileNameListProvider =
-    StateNotifierProvider<FileNameListNotifier, List<String>>((ref) {
+    StateNotifierProvider<FileNameListNotifier, List<SauceFile>>((ref) {
   return FileNameListNotifier();
 });
 
-class FileNameListNotifier extends StateNotifier<List<String>> {
+class FileNameListNotifier extends StateNotifier<List<SauceFile>> {
   FileNameListNotifier() : super([]);
   void reset() {
     state = [];
     // TODO Clear cache
   }
 
-  void add(String file) {
+  void add(SauceFile file) {
     state = [...state, file];
   }
 
-  void refresh(List<String> files) {
+  void refresh(List<SauceFile> files) {
     reset();
     for (final file in files) {
       state = [...state, file];
     }
   }
-}
 
+  List<SauceFile> nowState() {
+    return state;
+  }
+}
 
 dynamic filesProvider = StateNotifierProvider<FilesNotifier, List<File>>((ref) {
   return FilesNotifier();
@@ -45,7 +48,7 @@ class FilesNotifier extends StateNotifier<List<File>> {
     // TODO Clear cache
   }
 
-void addFile(File file) {
+  void addFile(File file) {
     state = [...state, file];
   }
 
@@ -57,10 +60,7 @@ void addFile(File file) {
   }
 }
 
-
-
 dynamic pathNameProvider = StateProvider((ref) => "");
-dynamic fileNameProvider = StateProvider((ref) => "Filename...");
 
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
@@ -105,4 +105,3 @@ class SauceNotifier extends StateNotifier<List<Sauce>> {
 final apiKeyProviderAsync = FutureProvider<String>((ref) async {
   return await FileFuns().readFile(apiFileNameConst);
 });
-

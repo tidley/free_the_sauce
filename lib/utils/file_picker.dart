@@ -4,50 +4,41 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_nft_storage/classes/classes.dart';
 import 'package:flutter_nft_storage/constants/constants.dart';
 import 'package:flutter_nft_storage/utils/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_nft_storage/providers.dart';
 
 class SelectSauce {
-  Future<void> selectFiles(bool _multiPick, WidgetRef ref) async {
-    try {
-      // dynamic _filesObjs = (await FilePicker.platform.pickFiles(
-      //   allowMultiple: _multiPick,
-      // ));
-      // dynamic _fileNames = _filesObjs?.names;
+  Future<void> selectFiles(WidgetRef ref) async {
+    // Reset variables
+    ref.read(fileNameListProvider.notifier).reset;
+    print(ref.read(fileNameListProvider.notifier).length);
 
+    try {
       // Get file paths
       List<String?>? _filePaths = (await FilePicker.platform.pickFiles(
-        allowMultiple: _multiPick,
+        allowMultiple: true,
       ))
           ?.paths;
-      // Reset variables
-      String _fnames = "";
-      ref.read(filesProvider.notifier).resetFiles();
+      // // Reset variables
+      // ref.read(fileNameListProvider.notifier).reset;
       for (var _file in _filePaths!) {
         if (_file != null) {
           print('Adding $_file to files list');
-          // // Old bit
-          // ref.read(filesProvider.notifier).addFile(
-          //       File(
-          //         _file,
-          //       ),
-          //     );
-          // New bit
-          ref.read(fileNameListProvider.notifier).add(_file);
+          ref
+              .read(fileNameListProvider.notifier)
+              .add(SauceFile(filename: _file));
           print('Added $_file to files list');
-          // Filenames for frontend
-          String _fname = _file.split('/').last;
-          _fnames = _fnames == "" ? _fname : _fnames += ' +++ ' + _fname;
         }
       }
-      ref.watch(fileNameProvider.state).state = _fnames;
     } on PlatformException catch (e) {
-      ref.watch(fileNameProvider.state).state =
-          "Unsupported operation" + e.toString();
+      ref
+          .read(fileNameListProvider.notifier)
+          .add("Unsupported operation" + e.toString());
     } catch (ex) {
-      ref.watch(fileNameProvider.state).state = ex.toString();
+      ref.read(fileNameListProvider.notifier).add(ex.toString());
     }
   }
 }
@@ -55,12 +46,10 @@ class SelectSauce {
 class FilePrep {
   Future<void> upload(bool _combineZip, String apiKey, WidgetRef ref,
       dynamic _errorSnackbar) async {
-    ref.watch(cidProvider.state).state = "Please wait...";
-    // String _files = ref.watch(pathNameProvider);
-
     List<String> _fileNameList = ref.watch(fileNameListProvider);
 
     if (_fileNameList.isNotEmpty) {
+      ref.watch(cidProvider.state).state = "Please wait...";
       // To zip or upload individually
       if (_combineZip) {
         await FileFuns().saveLocalZip(_fileNameList);
@@ -70,54 +59,22 @@ class FilePrep {
         print("Single file please");
       }
       for (var _fileName in _fileNameList) {
-        // Get data
-        String _dataString = await FileFuns().openFileString(_fileName);
         // Get / create name
         final String _cloudName = _combineZip
             ? DateTime.now().toString().substring(0, 19) + '.zip'
             : _fileName;
-        // Future<Map<String, dynamic>> response = ApiCalls().uploadToCloud(
-        //     apiKey, _dataString, _cloudName, _cloudName.split('.').last);
+        ref.watch(cidProvider.state).state =
+            "Uploading: ${_cloudName.split('/').last}";
+        // Get data
+        String _dataString = await FileFuns().openFileString(_fileName);
+        // Upload
         Future<String> response = ApiCalls().uploadToCloud(
             apiKey, _dataString, _cloudName, _cloudName.split('.').last);
-        print(await response.toString());
         final _cidDynamic = await json.decode(await response)["value"]["cid"];
-        FileFuns().appendSauce(_fileName, _cidDynamic, ref);
+        // Add to list
+        FileFuns().appendSauce(_cloudName.split('/').last, _cidDynamic, ref);
       }
       ref.watch(cidProvider.state).state = "Upload complete";
     }
-
-// Loop through and upload
-
-    // Map<String, dynamic>? response;
-    // String _fileName = "";
-    // try {
-    //   if (_combineZip) {
-    //     // TODO: Zip files, upload to ipfs
-    //     await FileFuns().saveLocalZip(_fileList);
-    //     final String _time = DateTime.now().toString().substring(0, 19);
-    //     _fileName = '$_time.zip';
-    //     response = await ApiCalls()
-    //         .upload(apiKey, await FileFuns().openLocalZip(), _fileName, '.zip');
-    //   } else {
-    //     String _file = ref.watch(pathNameProvider);
-    //     String _dataString = await FileFuns().openFileString(_file);
-
-    //     List<String> _fileComponents = _file.split('.');
-    //     for (var i = 0; i < _fileComponents.length - 1; i++) {
-    //       _fileName += _fileComponents[i];
-    //     }
-    //     String _fileType = _file.split('.').last;
-    //     response =
-    //         await ApiCalls().upload(apiKey, _dataString, _fileName, _fileType);
-
-    //     final _cidDynamic = response["value"]["cid"];
-    //     ref.watch(cidProvider.state).state = "Upload complete";
-    //     FileFuns().appendSauce(_fileName, _cidDynamic, ref);
-    //   }
-    // } catch (e) {
-    //   ref.watch(cidProvider.state).state = "Error: $e";
-    //   _errorSnackbar;
-    // }
   }
 }

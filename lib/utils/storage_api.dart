@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_nft_storage/classes/classes.dart';
 
 class ApiCalls {
-  Future<Map<String, dynamic>> uploadToCloud(
+  Future<String> uploadToCloud(
       String bearer, String data, String filename, String extension) async {
     var headers = {
       'Authorization': 'Bearer ' + bearer,
@@ -14,17 +14,14 @@ class ApiCalls {
         http.Request('POST', Uri.parse('https://api.nft.storage/upload'));
     request.body =
         '{"filename":$filename",extension":"$extension","data":"$data"}';
-    print(request.body.toString());
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
-    
     if (response.statusCode == 200) {
-      print("json.decode((await response.stream.bytesToString()).trim())");
-      print(json.decode((await response.stream.bytesToString()).trim()));
-      return await json.decode((await response.stream.bytesToString()).trim());
+      final _response = (await response.stream.bytesToString()).trim();
+      return _response;
     } else {
       print("Error in file upload");
-      return await json.decode((response.reasonPhrase.toString()).trim());
+      return (response.reasonPhrase.toString()).trim();
     }
   }
 

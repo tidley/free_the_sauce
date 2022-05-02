@@ -19,7 +19,8 @@ class Home extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String _fileName = ref.watch(fileNameProvider);
+    List<SauceFile> _filePaths = ref.watch(fileNameListProvider);
+
     final String _cid = ref.watch(cidProvider);
 
     // There must be a better way than "_init()" ?
@@ -30,16 +31,8 @@ class Home extends ConsumerWidget {
 
     _init();
 
-    // void _appendSauce(String _name, String _cid) async {
-    //   String _time = DateTime.now().toString().substring(0, 19);
-    //   String _dataString = "$_time,$_name,$_cid";
-    //   Sauce _newSauce = Sauce(epoch: _time, filename: _name, cid: _cid);
-    //   ref.read(sauceProvider.notifier).addSauce(_newSauce);
-    //   await FileFuns().autoAppend(cachedFileList, _dataString);
-    // }
-
-    void _select(bool _multi) async {
-      await SelectSauce().selectFiles(_multi, ref);
+    void _select() async {
+      await SelectSauce().selectFiles(ref);
     }
 
     void _uploadFail() {
@@ -50,33 +43,6 @@ class Home extends ConsumerWidget {
         ),
       );
     }
-
-    // void _upload(bool _multi) async {
-    //   ref.watch(cidProvider.state).state = "Please wait...";
-    //   try {
-    //     String _file = ref.watch(pathNameProvider);
-    //     String _dataString = await FileFuns().openFileString(_file);
-    //     String _fileName = "";
-    //     List<String> _fileComponents = _file.split('.');
-    //     for (var i = 0; i < _fileComponents.length - 1; i++) {
-    //       _fileName += _fileComponents[i];
-    //     }
-    //     String _fileType = _file.split('.').last;
-    //     Map<String, dynamic> response =
-    //         await ApiCalls().upload(apiKey, _dataString, _fileName, _fileType);
-    //     final _cidDynamic = response["value"]["cid"];
-    //     ref.watch(cidProvider.state).state = "Upload complete";
-    //     FileFuns().appendSauce(_fileName, _cidDynamic, ref);
-    //   } catch (e) {
-    //     ref.watch(cidProvider.state).state = "Error: $e";
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       const SnackBar(
-    //         backgroundColor: Colors.red,
-    //         content: Text('Failed to upload file: Please check API key.'),
-    //       ),
-    //     );
-    //   }
-    // }
 
     void _download() async {
       if (ref.read(downloadProvider) != "") {
@@ -129,6 +95,18 @@ class Home extends ConsumerWidget {
       });
     }
 
+    Column _fileNameList() {
+      List<Text> _fileNames = [];
+      for (var _filePath in _filePaths) {
+        // if (_filePath != null) {
+        _fileNames.add(Text(_filePath.toString().split('/').last));
+        // }
+      }
+      print(_fileNames.length);
+      // ref.watch(fileNameListProvider).resetSauceFiles();
+      return Column(children: _fileNames);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(appTitle),
@@ -147,15 +125,9 @@ class Home extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       WideButton(
-                        text: "Select file...",
+                        text: "Select file(s)...",
                         onpressed: () => {
-                          _select(false),
-                        },
-                      ),
-                      WideButton(
-                        text: "Select files...",
-                        onpressed: () => {
-                          _select(true),
+                          _select(),
                         },
                       ),
                     ],
@@ -163,7 +135,17 @@ class Home extends ConsumerWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(_fileName),
+                  // SizedBox(
+                  //   height: 100,
+                  //   child: ListView(
+                  //     children: [
+                  //       Text(""),
+                  //     ],
+                  //   ),
+                  // ),
+                  _fileNameList(),
+                  
+
                   const SizedBox(
                     height: 10,
                   ),

@@ -11,7 +11,6 @@ IMG_20220329_120715.jpg - bafkreictuxpjnldmh2dtay3eq4u5cwygbxqs2bjpset5l77ydfqxv
     1. _Select file..._ / _Select files..._
         1. await SelectSauce().selectFiles(_multi, ref);
             - `ref.read(fileNameListProvider.notifier).add(_file);`
-            - `ref.watch(fileNameProvider.state).state = _fnames;`
     1. _Upload 1-by-1_ / _Zip-upload_
         1.FilePrep().upload(bool, apiKey, ref, _uploadFail),
 

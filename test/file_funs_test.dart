@@ -31,6 +31,6 @@ void main() async {
       testFiles.add(entry);
       print(entry);
     }
-    await Archive().compressFiles(testFiles, outputName);
+    // await Archive().compressFiles(testFiles, outputName);
   });
 }
