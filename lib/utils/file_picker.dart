@@ -12,9 +12,10 @@ import 'package:flutter_nft_storage/providers.dart';
 
 class SelectSauce {
   Future<void> selectFiles(WidgetRef ref) async {
-    // Reset variables
-    ref.read(fileNameListProvider.notifier).reset;
-    print(ref.read(fileNameListProvider.notifier).state.length);
+    // // Reset variables
+    ref.read(fileNameListProvider.notifier).reset();
+    // FilePicker.platform.clearTemporaryFiles();
+    // print(ref.read(fileNameListProvider.notifier).length);
 
     try {
       // Get file paths
@@ -26,11 +27,7 @@ class SelectSauce {
       // ref.read(fileNameListProvider.notifier).reset;
       for (var _file in _filePaths!) {
         if (_file != null) {
-          print('Adding $_file to files list');
-          ref
-              .read(fileNameListProvider.notifier)
-              .add(SauceFile(filename: _file));
-          print('Added $_file to files list');
+          ref.read(fileNameListProvider.notifier).add(_file);
         }
       }
     } on PlatformException catch (e) {

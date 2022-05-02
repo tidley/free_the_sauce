@@ -66,53 +66,27 @@ class SauceList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     List<Sauce> sauces = ref.watch(sauceProvider);
-    return ListView(
-      reverse: true,
-      children: [
-        Column(
-          children: sauces
-              .map(
-                (Sauce sauce) => Card(
-                  child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        title: Text(sauce.epoch + " - " + sauce.filename,
-                            style: const TextStyle(fontSize: 14)),
-                        subtitle: Text(
-                          "CID: " + sauce.cid,
-                          style: const TextStyle(fontSize: 10),
-                        ),
-                        onTap: () => share(context, sauce),
-                      )
-                    ],
-                  ),
-                ),
-              )
-              .toList(),
-        )
-      ],
-    );
-    // return Column(
 
-    //   children: sauces
-    //       .map(
-    //         (Sauce sauce) => Card(
-    //           child: Column(
-    //             children: <Widget>[
-    //               ListTile(
-    //                 title: Text(sauce.epoch + " - " + sauce.filename,
-    //                     style: const TextStyle(fontSize: 14)),
-    //                 subtitle: Text(
-    //                   "CID: " + sauce.cid,
-    //                   style: const TextStyle(fontSize: 10),
-    //                 ),
-    //                 onTap: () => share(context, sauce),
-    //               )
-    //             ],
-    //           ),
-    //         ),
-    //       )
-    //       .toList(),
-    // );
+    return Column(
+      children: sauces
+          .map(
+            (Sauce sauce) => Card(
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text(sauce.epoch + " - " + sauce.filename,
+                        style: const TextStyle(fontSize: 14)),
+                    subtitle: Text(
+                      "CID: " + sauce.cid,
+                      style: const TextStyle(fontSize: 10),
+                    ),
+                    onTap: () => share(context, sauce),
+                  )
+                ],
+              ),
+            ),
+          )
+          .toList(),
+    );
   }
 }

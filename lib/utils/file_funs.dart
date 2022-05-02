@@ -115,9 +115,11 @@ class FileFuns {
   Future<void> csvToRef(String filename, WidgetRef ref) async {
     List<Sauce> sauceList = await FileFuns().csvToList(filename);
     if (_cache != sauceList) {
+      print("Updating cache");
       _cache = sauceList;
       ref.read(sauceProvider.notifier).resetSauce();
       for (Sauce item in sauceList) {
+        print(item.filename);
         ref.read(sauceProvider.notifier).addSauce(
               item,
             );

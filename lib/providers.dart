@@ -10,22 +10,22 @@ import 'package:flutter_nft_storage/constants/constants.dart';
 ////////////////////////// NEW PROVIDERS /////////////////////////
 //////////////////////////////////////////////////////////////////
 dynamic fileNameListProvider =
-    StateNotifierProvider<FileNameListNotifier, List<SauceFile>>((ref) {
+    StateNotifierProvider<FileNameListNotifier, List<String>>((ref) {
   return FileNameListNotifier();
 });
 
-class FileNameListNotifier extends StateNotifier<List<SauceFile>> {
+class FileNameListNotifier extends StateNotifier<List<String>> {
   FileNameListNotifier() : super([]);
   void reset() {
     state = [];
     // TODO Clear cache
   }
 
-  void add(SauceFile file) {
+  void add(String file) {
     state = [...state, file];
   }
 
-  void refresh(List<SauceFile> files) {
+  void refresh(List<String> files) {
     reset();
     for (final file in files) {
       state = [...state, file];
@@ -36,7 +36,7 @@ class FileNameListNotifier extends StateNotifier<List<SauceFile>> {
     return state.length;
   }
 
-  List<SauceFile> nowState() {
+  List<String> nowState() {
     return state;
   }
 }

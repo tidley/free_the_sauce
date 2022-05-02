@@ -20,9 +20,3 @@ class Sauce {
   }
 }
 
-@immutable
-class SauceFile {
-  final String filename;
-
-  const SauceFile({required this.filename});
-}

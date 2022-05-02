@@ -7,7 +7,6 @@ class Archive {
     try {
       final ZipFileEncoder encoder = ZipFileEncoder();
       encoder.create(filename);
-      print(filenames.length);
       for (var _filename in filenames) {
         print("compressing and adding $_filename");
         await encoder.addFile(File(_filename));

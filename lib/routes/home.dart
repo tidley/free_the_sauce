@@ -19,7 +19,7 @@ class Home extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<SauceFile> _filePaths = ref.watch(fileNameListProvider);
+    List<String> _filePaths = ref.watch(fileNameListProvider);
 
     final String _cid = ref.watch(cidProvider);
 
@@ -102,8 +102,7 @@ class Home extends ConsumerWidget {
         _fileNames.add(Text(_filePath.toString().split('/').last));
         // }
       }
-      print(_fileNames.length);
-      // ref.watch(fileNameListProvider).resetSauceFiles();
+      ref.read(fileNameListProvider.notifier).reset;
       return Column(children: _fileNames);
     }
 
@@ -210,15 +209,15 @@ class Home extends ConsumerWidget {
                 ],
               ),
             ),
-            // Container(
-            //   height: MediaQuery.of(context).size.height / 2.4,
-            //   child: ListView(
-            //     padding: const EdgeInsets.all(8),
-            //     children: const [
-            //       SauceList(),
-            //     ],
-            //   ),
-            // ),
+            Container(
+              height: MediaQuery.of(context).size.height / 2.4,
+              child: ListView(
+                padding: const EdgeInsets.all(8),
+                children: const [
+                  SauceList(),
+                ],
+              ),
+            ),
           ],
         )),
       ),
