@@ -13,7 +13,7 @@ class ApiCalls {
     http.Request request =
         http.Request('POST', Uri.parse('https://api.nft.storage/upload'));
     request.body =
-        '{"filename":"$filename","extension":"$extension","data":"$data"}';
+        '{"filename":"${filename.split('/').last}","data":"$data"}';
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -46,7 +46,7 @@ class ApiCalls {
     if (!request.body.contains("invalid ipfs path")) {
       return MyDataStorage.fromJson(json.decode(request.body.toString()));
     } else {
-      return MyDataStorage("", "", "");
+      return MyDataStorage("", "");
     }
   }
 

@@ -51,7 +51,7 @@ class Home extends ConsumerWidget {
           // final _bearer = dotenv.get('BEARER');
           MyDataStorage _sourceData =
               await ApiCalls().getData(apiKey, ref.read(downloadProvider));
-          if (_sourceData.extension != "") {
+          if (_sourceData.filename != "") {
             File _appendSauce =
                 await FileFuns().base64ToDownloads(_sourceData, ref);
             int size = await _appendSauce.length();

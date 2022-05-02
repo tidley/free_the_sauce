@@ -38,12 +38,12 @@ void main() async {
   //   cidDynamic = response["value"]["cid"];
   //   expect(cidDynamic?.contains('ba'), true);
   // });
-  test('Retrieving from nft.storage', () async {
-    MyDataStorage response =
-        await ApiCalls().getData(bearer, cidDynamic ??= cid);
-    final path = await FileFuns().saveFile(response, path: 'test/imageNew');
-    expect(path, "test/imageNew.${response.extension}");
-  });
+  // test('Retrieving from nft.storage', () async {
+  //   MyDataStorage response =
+  //       await ApiCalls().getData(bearer, cidDynamic ??= cid);
+  //   final path = await FileFuns().saveFile(response, path: 'test/imageNew');
+  //   expect(path, "test/imageNew.${response.extension}");
+  // });
   // test('Storage for app state', () async {
   //   String fileName = "flut.txt";
   //   String newData = "data35";
