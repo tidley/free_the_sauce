@@ -14,7 +14,7 @@ class SelectSauce {
   Future<void> selectFiles(WidgetRef ref) async {
     // Reset variables
     ref.read(fileNameListProvider.notifier).reset;
-    print(ref.read(fileNameListProvider.notifier).length);
+    print(ref.read(fileNameListProvider.notifier).state.length);
 
     try {
       // Get file paths

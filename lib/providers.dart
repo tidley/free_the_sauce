@@ -32,6 +32,10 @@ class FileNameListNotifier extends StateNotifier<List<SauceFile>> {
     }
   }
 
+  num length() {
+    return state.length;
+  }
+
   List<SauceFile> nowState() {
     return state;
   }

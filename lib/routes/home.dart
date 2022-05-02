@@ -210,15 +210,15 @@ class Home extends ConsumerWidget {
                 ],
               ),
             ),
-            Container(
-              height: MediaQuery.of(context).size.height / 2.4,
-              child: ListView(
-                padding: const EdgeInsets.all(8),
-                children: const [
-                  SauceList(),
-                ],
-              ),
-            ),
+            // Container(
+            //   height: MediaQuery.of(context).size.height / 2.4,
+            //   child: ListView(
+            //     padding: const EdgeInsets.all(8),
+            //     children: const [
+            //       SauceList(),
+            //     ],
+            //   ),
+            // ),
           ],
         )),
       ),
