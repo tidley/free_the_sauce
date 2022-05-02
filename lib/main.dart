@@ -7,7 +7,6 @@ import 'package:flutter_nft_storage/routes/login.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // Custom libs
 import 'package:flutter_nft_storage/routes/routes.dart';
-import 'package:flutter_nft_storage/utils/utils.dart';
 
 void main() async {
   await dotenv.load(fileName: "assets/.env");

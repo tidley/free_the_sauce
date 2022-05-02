@@ -1,13 +1,15 @@
 export 'sauce_class.dart';
 
 class MyDataStorage {
+  String filename;
   String extension;
   String rawData;
 
-  MyDataStorage(this.extension, this.rawData);
+  MyDataStorage(this.filename, this.extension, this.rawData);
 
   factory MyDataStorage.fromJson(dynamic json) {
-    return MyDataStorage(json['ext'] as String, json['data'] as String);
+    return MyDataStorage(json['filename'] as String,
+        json['extension'] as String, json['data'] as String);
   }
 
   @override
@@ -15,4 +17,3 @@ class MyDataStorage {
     return '{ $extension, $rawData }';
   }
 }
-

@@ -1,5 +1,5 @@
+import 'dart:io';
 import 'dart:ui';
-
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,28 +20,3 @@ class Sauce {
   }
 }
 
-class SauceNotifier extends StateNotifier<List<Sauce>> {
-  SauceNotifier() : super([]);
-
-void resetSauce() {
-    state = [];
-  }
-
-  void addSauce(Sauce sauce) {
-    state = [...state, sauce];
-  }
-
-  void removeSauce(String _cid) {
-    state = [
-      for (final sauce in state)
-        if (sauce.cid != _cid) sauce,
-    ];
-  }
-
-  void nameModify(String _cid, String _newName) {
-    state = [
-      for (final sauce in state)
-        if (sauce.cid == _cid) sauce.copyWith(filename: _newName) else sauce,
-    ];
-  }
-}

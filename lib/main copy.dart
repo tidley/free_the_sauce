@@ -44,7 +44,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
     _controller.addListener(() => _extension = _controller.text);
   }
 
-  void _openFileExplorer() async {
+  void _selectFiles() async {
     setState(() => _loadingPath = true);
     try {
       _directoryPath = null;
@@ -70,7 +70,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
     });
   }
 
-  void _clearCachedFiles() {
+  void _clearcachedFileList() {
     FilePicker.platform.clearTemporaryFiles().then((result) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -88,9 +88,9 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
     final file = _paths!.map((e) => e.path).toList()[0].toString();
     final dataString = await FileFuns().openFileString(file);
     final fileType = file.split('.').last;
-    Map<String, dynamic> response =
-        await ApiCalls().upload(bearer, dataString, fileType: fileType);
-    final cidDynamic = response["value"]["cid"];
+    // Map<String, dynamic> response =
+    //     await ApiCalls().upload(bearer, dataString, fileType: fileType);
+    final cidDynamic = "response";
     print(cidDynamic);
     final filename = file.split('/').last;
     print("filename: $filename");
@@ -192,7 +192,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
                   child: Column(
                     children: <Widget>[
                       ElevatedButton(
-                        onPressed: () => _openFileExplorer(),
+                        onPressed: () => _selectFiles(),
                         child: const Text("Open file picker"),
                       ),
                       ElevatedButton(
@@ -200,7 +200,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
                         child: const Text("Pick folder"),
                       ),
                       ElevatedButton(
-                        onPressed: () => _clearCachedFiles(),
+                        onPressed: () => _clearcachedFileList(),
                         child: const Text("Clear temporary files"),
                       ),
                       ElevatedButton(

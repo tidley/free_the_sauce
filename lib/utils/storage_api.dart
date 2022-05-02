@@ -5,20 +5,23 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_nft_storage/classes/classes.dart';
 
 class ApiCalls {
-  Future<Map<String, dynamic>> upload(String bearer, String inputBody,
-      {String fileType = "fileType"}) async {
+  Future<String> uploadToCloud(
+      String bearer, String data, String filename, String extension) async {
     var headers = {
       'Authorization': 'Bearer ' + bearer,
     };
-    var request =
+    http.Request request =
         http.Request('POST', Uri.parse('https://api.nft.storage/upload'));
-    request.body = '{"ext":"$fileType","data":"$inputBody"}';
+    request.body =
+        '{"filename":"$filename","extension":"$extension","data":"$data"}';
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-      return await json.decode((await response.stream.bytesToString()).trim());
+      final _response = (await response.stream.bytesToString()).trim();
+      return _response;
     } else {
-      return await json.decode((response.reasonPhrase.toString()).trim());
+      print("Error in file upload");
+      return (response.reasonPhrase.toString()).trim();
     }
   }
 
@@ -26,7 +29,7 @@ class ApiCalls {
     var headers = {
       'Authorization': 'Bearer ' + bearer,
     };
-    var request =
+    http.Request request =
         http.Request('GET', Uri.parse('https://api.nft.storage/' + cid));
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
@@ -41,11 +44,9 @@ class ApiCalls {
     const baseUrl = "https://ipfs.io/ipfs/";
     var request = await http.get(Uri.parse(baseUrl + cid));
     if (!request.body.contains("invalid ipfs path")) {
-      MyDataStorage myData =
-          MyDataStorage.fromJson(json.decode(request.body.toString()));
-      return myData;
+      return MyDataStorage.fromJson(json.decode(request.body.toString()));
     } else {
-      return MyDataStorage("", "");
+      return MyDataStorage("", "", "");
     }
   }
 

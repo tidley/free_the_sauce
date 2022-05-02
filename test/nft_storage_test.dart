@@ -1,15 +1,19 @@
-import 'package:flutter_nft_storage/classes/classes.dart';
+// deps
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:io';
 
+// uut
+import 'package:flutter_nft_storage/classes/classes.dart';
 import 'package:flutter_nft_storage/utils/utils.dart';
 
+// globals
 String bearer = "";
 const cid =
     'bafkreibnvz5fjofzoiry2njflcy5fkyhppyl2wt4jfeadygai2op7g77hq'; //'bafkreic5v7ls2nkhzys5a7pymiauaz3bqp33j6pbgpjnfi56h4qh4y4bd4';
 String? cidDynamic =
     'bafybeihxnlnok464hkfdbknzzv53vgwwijl6q4np4duk6us4f6novko5bq';
+
 void main() async {
   setUp(() {
     dotenv.testLoad(fileInput: File('assets/.env').readAsStringSync());
