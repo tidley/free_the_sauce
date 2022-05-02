@@ -26,9 +26,14 @@ class FileFuns {
     print("_filename");
     print(_filename);
     File imgfile = File(_filename);
-    Uint8List imgbytes = await imgfile.readAsBytes();
-    String bs4str = base64.encode(imgbytes);
-    return bs4str;
+    try {
+      Uint8List imgbytes = await imgfile.readAsBytes();
+      String bs4str = base64.encode(imgbytes);
+      return bs4str;
+    } catch (e) {
+      print(e.toString());
+      return "failed";
+    }
   }
 
   Future<String> saveFile(MyDataStorage sourceData,

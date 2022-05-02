@@ -13,7 +13,7 @@ class ApiCalls {
     http.Request request =
         http.Request('POST', Uri.parse('https://api.nft.storage/upload'));
     request.body =
-        '{"filename":$filename",extension":"$extension","data":"$data"}';
+        '{"filename":"$filename","extension":"$extension","data":"$data"}';
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {

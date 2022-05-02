@@ -58,18 +58,20 @@ class FilePrep {
       for (var _fileName in _fileNameList) {
         // Get / create name
         final String _cloudName = _combineZip
-            ? DateTime.now().toString().substring(0, 19) + '.zip'
+            ? '${DateTime.now().toString().substring(0, 19).toString()}.zip'
             : _fileName;
         ref.watch(cidProvider.state).state =
             "Uploading: ${_cloudName.split('/').last}";
         // Get data
         String _dataString = await FileFuns().openFileString(_fileName);
         // Upload
-        Future<String> response = ApiCalls().uploadToCloud(
-            apiKey, _dataString, _cloudName, _cloudName.split('.').last);
-        final _cidDynamic = await json.decode(await response)["value"]["cid"];
-        // Add to list
-        FileFuns().appendSauce(_cloudName.split('/').last, _cidDynamic, ref);
+        if (_dataString != "failed") {
+          Future<String> response = ApiCalls().uploadToCloud(
+              apiKey, _dataString, _cloudName, _cloudName.split('.').last);
+          final _cidDynamic = await json.decode(await response)["value"]["cid"];
+          // Add to list
+          FileFuns().appendSauce(_cloudName.split('/').last, _cidDynamic, ref);
+        }
       }
       ref.watch(cidProvider.state).state = "Upload complete";
     }
