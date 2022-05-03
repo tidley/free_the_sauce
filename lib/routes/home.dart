@@ -3,10 +3,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:android_path_provider/android_path_provider.dart';
 
 // Custom libs
-import 'package:flutter_nft_storage/widgets/buttons.dart';
+import 'package:flutter_nft_storage/widgets/widgets.dart';
 import 'package:flutter_nft_storage/utils/utils.dart';
 import 'package:flutter_nft_storage/providers.dart';
 import 'package:flutter_nft_storage/classes/classes.dart';
@@ -63,22 +62,15 @@ class Home extends ConsumerWidget {
                     : 'Failed to save file: Please check permissions.')),
               ),
             );
+            ref.watch(cidProvider.state).state = "Download complete";
           } else {
-            print("No data");
+            ref.watch(cidProvider.state).state = "Invalid request";
           }
-          ref.watch(cidProvider.state).state = "Download complete";
         } else {
           openAppSettings();
         }
       } else
         (print("blank cid"));
-    }
-
-    void _test() async {
-      String downloadsPath = await AndroidPathProvider.downloadsPath;
-
-      print("downloadsPath");
-      print(downloadsPath);
     }
 
     void _clearList() async {
@@ -95,15 +87,46 @@ class Home extends ConsumerWidget {
       });
     }
 
+    dynamic _checkClear() {
+      if (ref.watch(sauceProvider).isNotEmpty) {
+        return Alerts().checkClear(context, _clearList);
+      }
+    }
+
     Column _fileNameList() {
       List<Text> _fileNames = [];
+      //      ref.read(fileNameListProvider.notifier).reset();
+
       for (var _filePath in _filePaths) {
-        // if (_filePath != null) {
         _fileNames.add(Text(_filePath.toString().split('/').last));
-        // }
       }
-      ref.read(fileNameListProvider.notifier).reset;
+      //  ref.read(fileNameListProvider.notifier).reset;
       return Column(children: _fileNames);
+    }
+
+    TextStyle buttonStyle() {
+      return ref.watch(sauceProvider).isNotEmpty ? btnText : btnTextDisabled;
+    }
+
+    TextButton primaryFunctionButton(String _text, _onPressed) {
+      return TextButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.pressed)) {
+                return null;
+              } else {
+                return Theme.of(context).colorScheme.primary;
+              }
+            },
+          ),
+        ),
+        child: Text(
+          _text,
+          style: btnTextPrimary,
+        ),
+        onPressed: _onPressed,
+      );
     }
 
     return Scaffold(
@@ -114,40 +137,28 @@ class Home extends ConsumerWidget {
         child: Center(
             child: Column(
           children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.height / 1.85,
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 2.15,
               child: ListView(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      WideButton(
-                        text: "Select file(s)...",
-                        onpressed: () => {
-                          _select(),
-                        },
-                      ),
+                      primaryFunctionButton(
+                          'Select files from storage', _select),
                     ],
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  // SizedBox(
-                  //   height: 100,
-                  //   child: ListView(
-                  //     children: [
-                  //       Text(""),
-                  //     ],
-                  //   ),
-                  // ),
-                  Container(
+                  SizedBox(
                     height: MediaQuery.of(context).size.height / 25,
                     child: ListView(
                       padding: const EdgeInsets.all(8),
                       children: [
-                  _fileNameList(),
+                        _fileNameList(),
                       ],
                     ),
                   ),
@@ -175,7 +186,13 @@ class Home extends ConsumerWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(_cid),
+                  SizedBox(
+                    height: 20,
+                    child: Text(
+                      _cid,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                   Form(
                     autovalidateMode: AutovalidateMode.always,
                     onChanged: () {
@@ -186,7 +203,7 @@ class Home extends ConsumerWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           decoration: const InputDecoration(labelText: 'CID'),
-                          style: TextStyle(fontSize: 13),
+                          style: const TextStyle(fontSize: 13),
                           onSaved: (String? value) {
                             ref.read(downloadProvider.notifier).state = value;
                           },
@@ -201,26 +218,29 @@ class Home extends ConsumerWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  // WideButton(
-                  //   text: "Test",
-                  //   onpressed: _test,
-                  // ),
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
-                  WideButton(
-                    text: "Clear",
-                    onpressed: _clearList,
-                  ),
                 ],
               ),
             ),
-            Container(
-              height: MediaQuery.of(context).size.height / 2.8,
-              child: ListView(
-                padding: const EdgeInsets.all(8),
-                children: const [
-                  SauceList(),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 2.4,
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: ListView(
+                      // shrinkWrap: true,
+                      padding: const EdgeInsets.all(8),
+                      children: const [
+                        SauceList(),
+                      ],
+                    ),
+                  ),
+                  OutlinedButton(
+                    child: Text(
+                      'CLEAR LIST',
+                      style: buttonStyle(),
+                    ),
+                    onPressed: _checkClear,
+                  ),
                 ],
               ),
             ),
