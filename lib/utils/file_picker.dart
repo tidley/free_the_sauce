@@ -12,22 +12,20 @@ import 'package:flutter_nft_storage/providers.dart';
 
 class SelectSauce {
   Future<void> selectFiles(WidgetRef ref) async {
-    // // Reset variables
-    ref.read(fileNameListProvider.notifier).reset();
-    // FilePicker.platform.clearTemporaryFiles();
-    // print(ref.read(fileNameListProvider.notifier).length);
-
     try {
       // Get file paths
       List<String?>? _filePaths = (await FilePicker.platform.pickFiles(
         allowMultiple: true,
       ))
           ?.paths;
-      // // Reset variables
       // ref.read(fileNameListProvider.notifier).reset;
-      for (var _file in _filePaths!) {
-        if (_file != null) {
-          ref.read(fileNameListProvider.notifier).add(_file);
+      if (_filePaths != null) {
+        // Reset list
+        ref.read(fileNameListProvider.notifier).reset();
+        for (var _file in _filePaths) {
+          if (_file != null) {
+            ref.read(fileNameListProvider.notifier).add(_file);
+          }
         }
       }
     } on PlatformException catch (e) {
@@ -35,7 +33,7 @@ class SelectSauce {
           .read(fileNameListProvider.notifier)
           .add("Unsupported operation" + e.toString());
     } catch (ex) {
-      ref.read(fileNameListProvider.notifier).add(ex.toString());
+      ref.read(fileNameListProvider.notifier).add("ex.toString()");
     }
   }
 }

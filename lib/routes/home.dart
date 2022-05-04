@@ -30,10 +30,6 @@ class Home extends ConsumerWidget {
 
     _init();
 
-    void _select() async {
-      await SelectSauce().selectFiles(ref);
-    }
-
     void _uploadFail() {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -41,6 +37,10 @@ class Home extends ConsumerWidget {
           content: Text('Failed to upload file: Please check API key.'),
         ),
       );
+    }
+
+    dynamic upload(bool _combineZip, WidgetRef _ref) {
+      FilePrep().upload(_combineZip, apiKey, _ref, _uploadFail);
     }
 
     void _download() async {
@@ -62,15 +62,14 @@ class Home extends ConsumerWidget {
                     : 'Failed to save file: Please check permissions.')),
               ),
             );
-            ref.watch(cidProvider.state).state = "Download complete";
+            ref.watch(cidProvider.state).state = downloadComplete;
           } else {
-            ref.watch(cidProvider.state).state = "Invalid request";
+            ref.watch(cidProvider.state).state = invalidRequest;
           }
         } else {
           openAppSettings();
         }
-      } else
-        (print("blank cid"));
+      }
     }
 
     void _clearList() async {
@@ -81,7 +80,8 @@ class Home extends ConsumerWidget {
             backgroundColor: result! ? Colors.green : Colors.red,
             content: Text((result
                 ? 'Temporary files removed successfully.'
-                : 'Failed to remove temporary files.')),
+                  : 'Failed to remove temporary files.'),
+            ),
           ),
         );
       });
@@ -95,20 +95,19 @@ class Home extends ConsumerWidget {
 
     Column _fileNameList() {
       List<Text> _fileNames = [];
-      //      ref.read(fileNameListProvider.notifier).reset();
-
       for (var _filePath in _filePaths) {
         _fileNames.add(Text(_filePath.toString().split('/').last));
       }
-      //  ref.read(fileNameListProvider.notifier).reset;
       return Column(children: _fileNames);
     }
 
-    TextStyle buttonStyle() {
+  
+
+    TextStyle secondaryButtonStyle() {
       return ref.watch(sauceProvider).isNotEmpty ? btnText : btnTextDisabled;
     }
 
-    TextButton primaryFunctionButton(String _text, _onPressed) {
+    TextButton downloadFunction() {
       return TextButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith<Color?>(
@@ -121,11 +120,70 @@ class Home extends ConsumerWidget {
             },
           ),
         ),
-        child: Text(
-          _text,
+        child: const Text(
+          homeButtonText01,
           style: btnTextPrimary,
         ),
-        onPressed: _onPressed,
+        onPressed: () {
+          SelectSauce().selectFiles(ref);
+        },
+      );
+    }
+
+    TextButton uploadButton(bool _multi) {
+      return TextButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+              (Set<MaterialState> states) {
+            if (ref.watch(fileNameListProvider).isNotEmpty) {
+              if (states.contains(MaterialState.pressed)) {
+                return null;
+              } else {
+                return Theme.of(context).colorScheme.primary;
+              }
+            } else {
+              return Theme.of(context).disabledColor;
+            }
+          }),
+        ),
+        child: Text(
+          _multi ? zipUpload : upload1by1,
+          style: btnTextPrimary,
+        ),
+        onPressed: () {
+          if (ref.watch(fileNameListProvider).isNotEmpty) {
+            upload(_multi, ref);
+          }
+        },
+      );
+    }
+
+    TextButton downloadButton() {
+      return TextButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+              if (ref.read(downloadProvider).isNotEmpty) {
+                if (states.contains(MaterialState.pressed)) {
+                  return null;
+                } else {
+                  return Theme.of(context).colorScheme.primary;
+                }
+              } else {
+                return Theme.of(context).disabledColor;
+              }
+            },
+          ),
+        ),
+        child: const Text(
+          download,
+          style: btnTextPrimary,
+        ),
+        onPressed: () {
+          if (ref.read(downloadProvider).isNotEmpty) {
+            _download();
+          }
+        },
       );
     }
 
@@ -138,7 +196,7 @@ class Home extends ConsumerWidget {
             child: Column(
           children: <Widget>[
             SizedBox(
-              height: MediaQuery.of(context).size.height / 2.15,
+              height: MediaQuery.of(context).size.height / 2.25,
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                 children: [
@@ -146,8 +204,7 @@ class Home extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      primaryFunctionButton(
-                          'Select files from storage', _select),
+                      downloadFunction(),
                     ],
                   ),
                   const SizedBox(
@@ -156,7 +213,7 @@ class Home extends ConsumerWidget {
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 25,
                     child: ListView(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
                       children: [
                         _fileNameList(),
                       ],
@@ -169,18 +226,7 @@ class Home extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      WideButton(
-                          text: "Upload 1-by-1",
-                          onpressed: () => {
-                                FilePrep()
-                                    .upload(false, apiKey, ref, _uploadFail),
-                              }),
-                      WideButton(
-                          text: "Zip-upload",
-                          onpressed: () => {
-                                FilePrep()
-                                    .upload(true, apiKey, ref, _uploadFail),
-                              }),
+                      uploadButton(false), uploadButton(true)
                     ],
                   ),
                   const SizedBox(
@@ -211,9 +257,12 @@ class Home extends ConsumerWidget {
                       )
                     ]),
                   ),
-                  WideButton(
-                    text: "Download",
-                    onpressed: _download,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      downloadButton(),
+                    ],
                   ),
                   const SizedBox(
                     height: 10,
@@ -222,7 +271,7 @@ class Home extends ConsumerWidget {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height / 2.4,
+              height: MediaQuery.of(context).size.height / 2.3,
               child: Column(
                 children: <Widget>[
                   Expanded(
@@ -237,7 +286,7 @@ class Home extends ConsumerWidget {
                   OutlinedButton(
                     child: Text(
                       'CLEAR LIST',
-                      style: buttonStyle(),
+                      style: secondaryButtonStyle(),
                     ),
                     onPressed: _checkClear,
                   ),

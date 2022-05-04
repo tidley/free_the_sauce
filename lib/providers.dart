@@ -65,6 +65,8 @@ class FilesNotifier extends StateNotifier<List<File>> {
 }
 
 dynamic pathNameProvider = StateProvider((ref) => "");
+dynamic downloadProvider = StateProvider((ref) => "");
+
 
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
@@ -72,10 +74,8 @@ dynamic pathNameProvider = StateProvider((ref) => "");
 
 dynamic apiKeyProvider = StateProvider((ref) => "");
 dynamic cidProvider = StateProvider((ref) => "");
-dynamic downloadProvider = StateProvider((ref) => "");
 dynamic cacheProvider = StateProvider((ref) => "");
 
-// List() filesProviders = StateProvider(["create"]);
 
 final sauceProvider = StateNotifierProvider<SauceNotifier, List<Sauce>>((ref) {
   return SauceNotifier();

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_nft_storage/constants/constants.dart';
 import 'package:http/http.dart' as http;
 
 ///
@@ -12,8 +13,7 @@ class ApiCalls {
     };
     http.Request request =
         http.Request('POST', Uri.parse('https://api.nft.storage/upload'));
-    request.body =
-        '{"filename":"${filename.split('/').last}","data":"$data"}';
+    request.body = '{"filename":"${filename.split('/').last}","data":"$data"}';
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -41,8 +41,10 @@ class ApiCalls {
   }
 
   Future<MyDataStorage> getData(String bearer, String cid) async {
-    const baseUrl = "https://ipfs.io/ipfs/";
-    var request = await http.get(Uri.parse(baseUrl + cid));
+    final String _cid = cid.split(' ').last;
+    print(_cid);
+
+    var request = await http.get(Uri.parse(ipfsGateway + _cid));
     if (!request.body.contains("invalid ipfs path")) {
       return MyDataStorage.fromJson(json.decode(request.body.toString()));
     } else {
