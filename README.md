@@ -1,15 +1,14 @@
-# Free the Sauce
+# Connect the World
 Let data be free.
 
 Short demo
-https://youtu.be/D29qNI0-hI0
+https://youtu.be/8j7Ij9uSK20
 
 ## Todo
 1. Remove files in app storage when clicking clean / remove
 1. Qr scan for nft.storage key
 1. Add 'Share all' buttons
 1. Add dividers in layout https://www.woolha.com/tutorials/flutter-using-divider-and-verticaldivider-widgets-examples
-
 
 1. https://riverpod.dev/docs/providers/future_provider
 
