@@ -285,7 +285,7 @@ class Home extends ConsumerWidget {
                   ),
                   OutlinedButton(
                     child: Text(
-                      'CLEAR LIST',
+                      'Clear',
                       style: secondaryButtonStyle(),
                     ),
                     onPressed: _checkClear,

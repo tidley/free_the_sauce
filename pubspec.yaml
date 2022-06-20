@@ -24,11 +24,13 @@ dependencies:
   url_launcher: ^6.0.20
   tar: ^0.5.5
   archive: ^3.3.0
+  web3dart: ^2.3.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
+  build_runner: ^2.1.11
 
 flutter:
   uses-material-design: true

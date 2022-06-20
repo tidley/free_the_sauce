@@ -1,0 +1,28 @@
+[
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "invoice",
+                "type": "string"
+            }
+        ],
+        "name": "PaymentRequest",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "_invoice",
+                "type": "string"
+            }
+        ],
+        "name": "newInvoice",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]
