@@ -22,6 +22,7 @@ void main() async {
     String rpcUrl = "https://matic-mumbai.chainstacklabs.com";
     Credentials creds = formCredential(PRIVATE);
     EthereumAddress address = await creds.extractAddress();
+    print(address);
     Web3Client ethClient = rpcConnect(rpcUrl, address);
     double balance = await getBalance(ethClient, address);
     print("balance");
