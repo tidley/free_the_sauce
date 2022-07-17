@@ -11,7 +11,7 @@ https://youtu.be/8j7Ij9uSK20
 
 
 https://github.com/xclud/web3dart/blob/development/example/contracts.dart
-
+https://lightning.readthedocs.io/lightning-getinfo.7.html 
 
 
 1. Add dividers in layout https://www.woolha.com/tutorials/flutter-using-divider-and-verticaldivider-widgets-examples

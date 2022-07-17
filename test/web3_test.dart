@@ -19,7 +19,7 @@ void main() async {
   });
 
   test('Lets load', () async {
-    String rpcUrl = "https://rpc-mumbai.matic.today";
+    String rpcUrl = "https://matic-mumbai.chainstacklabs.com";
     Credentials creds = formCredential(PRIVATE);
     EthereumAddress address = await creds.extractAddress();
     Web3Client ethClient = rpcConnect(rpcUrl, address);
