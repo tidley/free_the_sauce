@@ -4,9 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nyc --reporter=text mocha --exit  --timeout 50000"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "assert": "^2.0.0",
+    "ethers": "^5.6.9",
+    "mocha": "^10.0.0",
+    "nyc": "^15.1.0"
+  }
 }
