@@ -1,3 +1,76 @@
+# OpenSauce
+
+## Team Members
+tidley
+
+## Tool Description
+Smartphone app enabling immutable, free and anonymous distribution of GPS-verifiable data.
+
+### Pro-Social Technology
+Users of the FOSS (Free and Open Source Software) application can securely archive data using a decentralised storage network called IPFS (**I**nter**P**lanetary **F**ile**S**ystem).
+
+### Easy Access
+Data can be any file on the smartphone, such as photos, videos and audio recordings. Once uploaded these files are retrieved using a fingerprint calculated from the sha-256 hash of the data. Ths hash is called a **C**ontent-**ID**entifier, or **CID**, that can be returned by one of several gateways e.g. https://w3s.link/ipfs/bafkreidivzimqfqtoqxkrpge6bjyhlvxqs3rhe73owtmdulaxr5do5in7u. The immutable link is a fingerprint of the data, preventing tampering. Downloading of the data doesn't require access credentials and is available from several anonymous gateways: ipfs.io/ipfs... w3s.link/ipfs/,,,
+
+### Immutable Data
+There is no method to delete data from the network once it's uploaded. The longevity of data storage is defined by the underlying smart contracts, which stipulate at least 18 months. In this period up to 1 TB of data can be stored for zero cost. Cost may become non-zero over time.
+
+### Options
+
+Read text from images on centralised photo-sharing sites: https://imgur.com/a/RKR3S76
+    - These can be 
+
+### Requirements
+- API after free registration at https://web3.storage/login/
+    > Github handle / e-mail not required after sign-up so disposable identities can be used.
+
+Purpose:
+Free sharing of data.
+### From Source
+
+### From Researcher
+- Read data from ipfs.io/ipfs...
+- Download, verify source
+    - Source verifiable using hash of data
+        - in block?
+        - in BTC tx?
+        - 
+    - Source verifiable with GPS data and date
+
+- Increased transparency.
+
+
+This sections discusses the purpose and motivation for the tool, and how it addresses a tool need you've identified.
+
+## Installation
+This section includes detailed instructions for installing the tool, including any terminal commands that need to be executed and dependencies that need to be installed. Instructions should be understandable by non-technical users (e.g. someone who knows how to open a terminal and run commands, but isn't necessarily a programmer), for example:
+
+1. Make sure you have Python version 3.8 or greater installed
+
+2. Download the tool's repository using the command:
+
+        git clone https://github.com/bellingcat/hackathon-submission-template.git
+
+3. Move to the tool's directory and install the tool
+
+        cd hackathon-submission-template
+        pip install .
+
+## Usage
+This sections includes detailed instructions for using the tool. If the tool has a command-line interface, include common commands and arguments, and some examples of commands and a description of the expected output. If the tool has a graphical user interface or a browser interface, include screenshots and describe a common workflow.
+
+## Additional Information
+This section includes any additional information that you want to mention about the tool, including:
+- Potential next steps for the tool (i.e. what you would implement if you had more time)
+- Any limitations of the current implementation of the tool
+- Motivation for design/architecture decisions
+
+## Goals
+### Bellingcat integertion
+- Each time data are uploaded the CID can be sent to an endpoint at Bellingcat (e.g. https://www.bellingcat.com/resources/2022/09/22/preserve-vital-online-content-with-bellingcats-auto-archiver-tool/).
+- Bellingcat can introduce an automated verification scheme à la https://mnemonic.org/
+- >100MB uploads
+---
 # Connect the World
 Let data be free.
 
@@ -32,3 +105,4 @@ FutureBuilder
 https://flutterigniter.com/build-widget-with-async-method-call/
 Rebuilds
 https://flutterigniter.com/future-async-called-multiple-times/
+

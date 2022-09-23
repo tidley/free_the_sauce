@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 @immutable
@@ -17,3 +16,20 @@ class Sauce {
   }
 }
 
+///
+/// Object eventually compressed as a .zip
+///
+class FileList {
+  final List<VeriSauce> files;
+  const FileList({required this.files});
+}
+
+///
+/// This class describes the zipped folder layout
+///
+class VeriSauce {
+  final DateTime date; // = DateTime.now();
+  final String gps;
+  final String file;
+  const VeriSauce({required this.date, required this.gps, required this.file});
+}

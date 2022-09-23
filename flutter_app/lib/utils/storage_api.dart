@@ -25,6 +25,10 @@ class ApiCalls {
     }
   }
 
+  Future<String> multiToCloud(
+    String bearer, List<VeriSauce> files,
+  )
+
   Future<String> getStatus(String bearer, String cid) async {
     var headers = {
       'Authorization': 'Bearer ' + bearer,

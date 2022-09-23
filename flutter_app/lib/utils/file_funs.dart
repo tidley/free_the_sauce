@@ -7,8 +7,6 @@ import 'package:flutter_nft_storage/utils/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
-import 'package:tar/tar.dart';
-import 'package:path/path.dart' as p;
 
 import 'package:flutter_nft_storage/classes/classes.dart';
 
