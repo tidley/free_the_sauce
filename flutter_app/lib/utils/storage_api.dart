@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_nft_storage/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 ///
 import 'package:flutter_nft_storage/classes/classes.dart';
@@ -12,7 +14,7 @@ class ApiCalls {
       'Authorization': 'Bearer ' + bearer,
     };
     http.Request request =
-        http.Request('POST', Uri.parse('https://api.nft.storage/upload'));
+        http.Request('POST', Uri.parse('https://api.web3.storage/upload'));
     request.body = '{"filename":"${filename.split('/').last}","data":"$data"}';
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
@@ -23,6 +25,30 @@ class ApiCalls {
       print("Error in file upload");
       return (response.reasonPhrase.toString()).trim();
     }
+  }
+
+  Future<String> uploadFile(String bearer, String filename) async {
+    var url = Uri.parse('https://api.web3.storage/upload');
+    Map<String, String> headers = {
+      "Accept": "application/json",
+      "Authorization": "Bearer " + bearer,
+      "Content-Type": "multipart/form-data",
+    }; // ignore this headers if there is no authentication
+    http.MultipartRequest request = http.MultipartRequest("POST", url);
+
+    http.MultipartFile multipartFile =
+        await http.MultipartFile.fromPath('file', filename);
+
+    request.files.add(multipartFile);
+    request.headers.addAll(headers);
+
+    http.StreamedResponse res = await request.send();
+
+    if (res.statusCode != 200) {
+      throw Exception('http.post error: statusCode= ${res.statusCode}');
+    }
+    String response = await res.stream.bytesToString();
+    return response.trim();
   }
 
   Future<String> getStatus(String bearer, String cid) async {

@@ -109,8 +109,11 @@ class FileFuns {
   Future<File> base64ToDownloads(
       MyDataStorage _sourceData, WidgetRef ref) async {
     String _downloadsPath = await DirInfo().downloadsPath();
+    String fn = _sourceData.filename.replaceAll(' ', '_');
+    fn = _sourceData.filename.replaceAll(':', '-');
     File _sauce = await File(
-            '$_downloadsPath/${_sourceData.filename}')
+        '$_downloadsPath/$fn')
+        // '$_downloadsPath/file.zip')
         .create();
     Uint8List _decodedbytes = base64.decode(_sourceData.rawData);
     return await _sauce.writeAsBytes(_decodedbytes);

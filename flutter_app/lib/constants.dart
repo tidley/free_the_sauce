@@ -5,7 +5,7 @@ const String appTitle = "Connect the World";
 const String apiFileNameConst = "apiKey2.txt";
 const String cachedFileList = "cached_sauce.csv";
 const String tempZip = 'tmp.zip';
-const String ipfsGateway = "https://ipfs.io/ipfs/";
+const String ipfsGateway = "https://w3s.link/ipfs/";
 // Buttons
 const String homeButtonText01 = "Select files from device";
 const String upload1by1 = "Upload 1-by-1";

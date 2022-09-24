@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_nft_storage/classes/classes.dart';
@@ -64,9 +65,9 @@ class FilePrep {
         String _dataString = await FileFuns().openFileString(_fileName);
         // Upload
         if (_dataString != "failed") {
-          Future<String> response = ApiCalls().uploadToCloud(
+          String response = await ApiCalls().uploadToCloud(
               apiKey, _dataString, _cloudName, _cloudName.split('.').last);
-          final _cidDynamic = await json.decode(await response)["value"]["cid"];
+          final _cidDynamic = await json.decode(response)["cid"];
           // Add to list
           FileFuns().appendSauce(_cloudName.split('/').last, _cidDynamic, ref);
         }
@@ -78,7 +79,6 @@ class FilePrep {
   Future<void> uploadArchive(
       String apiKey, WidgetRef ref, dynamic _errorSnackbar, dynamic gps) async {
     List<String> _fileNameList = ref.watch(fileNameListProvider);
-
     if (_fileNameList.isNotEmpty) {
       // Update UI
       ref.watch(cidProvider.state).state = "Please wait...";
@@ -88,13 +88,19 @@ class FilePrep {
       String metaData =
           "Time: $dateTime\nLat: ${gps["lat"]}\nLong: ${gps["long"]}";
       print(metaData);
-      FileFuns().writeFile(metaDataFn, metaData);
+      await FileFuns().writeFile(metaDataFn, metaData);
       // Prepare files for upload
-      _fileNameList.add(metaDataFn);
+      ref
+          .read(fileNameListProvider.notifier)
+          .add(await FileFuns().getLocalPath() + '/' + metaDataFn);
+      // Compress data and store
       await FileFuns().saveLocalZip(_fileNameList);
       String finalUploadName = await FileFuns().localZipPath();
-      
-
+      print(finalUploadName);
+      String response = await ApiCalls().uploadFile(apiKey, finalUploadName);
+      final _cidDynamic = await json.decode(response)["cid"];
+      FileFuns().appendSauce(finalUploadName.split('/').last, _cidDynamic, ref);
     }
+    ref.watch(cidProvider.state).state = "Upload complete";
   }
 }
