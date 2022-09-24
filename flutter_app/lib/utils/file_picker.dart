@@ -5,7 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_nft_storage/classes/classes.dart';
-import 'package:flutter_nft_storage/constants/constants.dart';
+import 'package:flutter_nft_storage/constants.dart';
 import 'package:flutter_nft_storage/utils/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_nft_storage/providers.dart';
@@ -72,6 +72,16 @@ class FilePrep {
         }
       }
       ref.watch(cidProvider.state).state = "Upload complete";
+    }
+  }
+
+  Future<void> uploadArchive(String apiKey, WidgetRef ref) async {
+    List<String> _fileNameList = ref.watch(fileNameListProvider);
+    if (_fileNameList.isNotEmpty) {
+      // Update UI
+      ref.watch(cidProvider.state).state = "Please wait...";
+      // Prepare files for upload
+      final dateTime = DateTime.now();
     }
   }
 }

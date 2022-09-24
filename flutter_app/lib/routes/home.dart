@@ -9,8 +9,7 @@ import 'package:flutter_nft_storage/widgets/widgets.dart';
 import 'package:flutter_nft_storage/utils/utils.dart';
 import 'package:flutter_nft_storage/providers.dart';
 import 'package:flutter_nft_storage/classes/classes.dart';
-import 'package:flutter_nft_storage/constants/constants.dart';
-import 'package:flutter_nft_storage/widgets/sauce_list.dart';
+import 'package:flutter_nft_storage/constants.dart';
 
 class Home extends ConsumerWidget {
   final String apiKey;
@@ -21,6 +20,7 @@ class Home extends ConsumerWidget {
     List<String> _filePaths = ref.watch(fileNameListProvider);
 
     final String _cid = ref.watch(cidProvider);
+
 
     // There must be a better way than "_init()" ?
     Future<void> _init() async {
@@ -78,8 +78,9 @@ class Home extends ConsumerWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: result! ? Colors.green : Colors.red,
-            content: Text((result
-                ? 'Temporary files removed successfully.'
+            content: Text(
+              (result
+                  ? 'Temporary files removed successfully.'
                   : 'Failed to remove temporary files.'),
             ),
           ),
@@ -100,8 +101,6 @@ class Home extends ConsumerWidget {
       }
       return Column(children: _fileNames);
     }
-
-  
 
     TextStyle secondaryButtonStyle() {
       return ref.watch(sauceProvider).isNotEmpty ? btnText : btnTextDisabled;
@@ -127,6 +126,48 @@ class Home extends ConsumerWidget {
         onPressed: () {
           SelectSauce().selectFiles(ref);
         },
+      );
+    }
+
+    // void gpsFun() async {
+    //   bool servicestatus = await Geolocator.isLocationServiceEnabled();
+
+    //   if (servicestatus) {
+    //     print("GPS service is enabled");
+    //   } else {
+    //     print("GPS service is disabled.");
+    //   }
+
+    //   LocationPermission permission = await Geolocator.checkPermission();
+
+    //   if (permission == LocationPermission.denied) {
+    //     permission = await Geolocator.requestPermission();
+    //     if (permission == LocationPermission.denied) {
+    //       print('Location permissions are denied');
+    //     } else if (permission == LocationPermission.deniedForever) {
+    //       print("'Location permissions are permanently denied");
+    //     } else {
+    //       print("GPS Location service is granted");
+    //       Position position = await Geolocator.getCurrentPosition(
+    //           desiredAccuracy: LocationAccuracy.high);
+    //       print(position.longitude); //Output: 80.24599079
+    //       print(position.latitude); //Output: 29.6593457
+    //     }
+    //   } else {
+    //     print("GPS Location permission granted.");
+    //   }
+    // }
+
+    CheckboxListTile checkTile() {
+      return CheckboxListTile(
+        title: const Text('GPS'),
+        value: ref.read(gpsProvider.notifier).state,
+        checkColor: const Color(0xFF000000),
+        onChanged: (bool? value) {
+          Gps().isGps();
+          ref.read(gpsProvider.notifier).state = value;
+        },
+        secondary: const Icon(Icons.location_on),
       );
     }
 
@@ -223,12 +264,12 @@ class Home extends ConsumerWidget {
                     height: 10,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      uploadButton(false), uploadButton(true)
-                    ],
-                  ),
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        SizedBox(width: 175, child: checkTile()),
+                        uploadButton(true)
+                      ]),
                   const SizedBox(
                     height: 10,
                   ),

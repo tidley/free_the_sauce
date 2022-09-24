@@ -4,7 +4,7 @@ import 'package:flutter_nft_storage/classes/classes.dart';
 import 'package:flutter_nft_storage/utils/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:flutter_nft_storage/constants/constants.dart';
+import 'package:flutter_nft_storage/constants.dart';
 
 //////////////////////////////////////////////////////////////////
 ////////////////////////// NEW PROVIDERS /////////////////////////
@@ -13,6 +13,14 @@ dynamic fileNameListProvider =
     StateNotifierProvider<FileNameListNotifier, List<String>>((ref) {
   return FileNameListNotifier();
 });
+dynamic pathNameProvider = StateProvider((ref) => "");
+dynamic downloadProvider = StateProvider((ref) => "");
+dynamic gpsProvider = StateProvider((ref) => false);
+dynamic locationProvider = StateProvider((ref) => "");
+
+dynamic filesProvider = StateNotifierProvider<FilesNotifier, List<File>>((ref) {
+  return FilesNotifier();
+});
 
 class FileNameListNotifier extends StateNotifier<List<String>> {
   FileNameListNotifier() : super([]);
@@ -20,30 +28,22 @@ class FileNameListNotifier extends StateNotifier<List<String>> {
     state = [];
     // TODO Clear cache
   }
-
   void add(String file) {
     state = [...state, file];
   }
-
   void refresh(List<String> files) {
     reset();
     for (final file in files) {
       state = [...state, file];
     }
   }
-
   num length() {
     return state.length;
   }
-
   List<String> nowState() {
     return state;
   }
 }
-
-dynamic filesProvider = StateNotifierProvider<FilesNotifier, List<File>>((ref) {
-  return FilesNotifier();
-});
 
 class FilesNotifier extends StateNotifier<List<File>> {
   FilesNotifier() : super([]);
@@ -64,8 +64,7 @@ class FilesNotifier extends StateNotifier<List<File>> {
   }
 }
 
-dynamic pathNameProvider = StateProvider((ref) => "");
-dynamic downloadProvider = StateProvider((ref) => "");
+
 
 
 //////////////////////////////////////////////////////////////////

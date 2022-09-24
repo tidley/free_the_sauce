@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_nft_storage/constants/constants.dart';
+import 'package:flutter_nft_storage/constants.dart';
 import 'package:flutter_nft_storage/providers.dart';
 import 'package:flutter_nft_storage/routes/login.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

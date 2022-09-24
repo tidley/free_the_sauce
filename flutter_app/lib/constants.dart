@@ -10,6 +10,7 @@ const String ipfsGateway = "https://ipfs.io/ipfs/";
 const String homeButtonText01 = "Select files from device";
 const String upload1by1 = "Upload 1-by-1";
 const String zipUpload = "Zip-upload";
+const String upload = "Upload";
 const String download = "Download";
 // Messages
 const String downloadComplete = "Download complete";

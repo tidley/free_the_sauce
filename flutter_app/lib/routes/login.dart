@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 //
-import 'package:flutter_nft_storage/constants/constants.dart';
+import 'package:flutter_nft_storage/constants.dart';
 
 import 'package:flutter_nft_storage/providers.dart';
 

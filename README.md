@@ -4,19 +4,22 @@
 tidley
 
 ## Tool Description
-Smartphone app enabling immutable, free and anonymous distribution of GPS-verifiable data.
+Smartphone app enabling immutable, free and anonymous distribution of GPS-linked data.
 
 ### Pro-Social Technology
-Users of the FOSS (Free and Open Source Software) application can securely archive data using a decentralised storage network called IPFS (**I**nter**P**lanetary **F**ile**S**ystem).
+Users of this FOSS (Free and Open Source Software) application can securely archive data using a decentralised storage network called IPFS (**I**nter**P**lanetary **F**ile**S**ystem).
 
 ### Easy Access
-Data can be any file on the smartphone, such as photos, videos and audio recordings. Once uploaded these files are retrieved using a fingerprint calculated from the sha-256 hash of the data. Ths hash is called a **C**ontent-**ID**entifier, or **CID**, that can be returned by one of several gateways e.g. https://w3s.link/ipfs/bafkreidivzimqfqtoqxkrpge6bjyhlvxqs3rhe73owtmdulaxr5do5in7u. The immutable link is a fingerprint of the data, preventing tampering. Downloading of the data doesn't require access credentials and is available from several anonymous gateways: ipfs.io/ipfs... w3s.link/ipfs/,,,
+Data can be any file(s) on the smartphone including photos, videos and audio. Once uploaded to IPFS these files are referenced using a unique, immutable link called a **C**ontent-**ID**entifier, or **CID**. 
 
-### Immutable Data
-There is no method to delete data from the network once it's uploaded. The longevity of data storage is defined by the underlying smart contracts, which stipulate at least 18 months. In this period up to 1 TB of data can be stored for zero cost. Cost may become non-zero over time.
+Several anonymous gateways can be used to retrieve the data using just the CID, e.g. https://w3s.link/ipfs/bafkreidivzimqfqtoqxkrpge6bjyhlvxqs3rhe73owtmdulaxr5do5in7u
 
-### Options
+### Immutable and Tamper-proof
+There is no method to delete data from the network once it's uploaded, and the more it's accessed the more the data are made available via nodes on the IPFS network.
 
+The CID used to retrieve the data is a fingerprint, sha-256 hash of the contents in base32 format, meaning the data cannot be altered without changing the CID.
+
+### Alternatives
 Read text from images on centralised photo-sharing sites: https://imgur.com/a/RKR3S76
     - These can be 
 
@@ -64,6 +67,7 @@ This section includes any additional information that you want to mention about 
 - Potential next steps for the tool (i.e. what you would implement if you had more time)
 - Any limitations of the current implementation of the tool
 - Motivation for design/architecture decisions
+### Challenges
 
 ## Goals
 ### Bellingcat integertion

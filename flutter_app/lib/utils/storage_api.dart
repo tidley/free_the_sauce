@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flutter_nft_storage/constants/constants.dart';
+import 'package:flutter_nft_storage/constants.dart';
 import 'package:http/http.dart' as http;
 
 ///
@@ -24,10 +24,6 @@ class ApiCalls {
       return (response.reasonPhrase.toString()).trim();
     }
   }
-
-  Future<String> multiToCloud(
-    String bearer, List<VeriSauce> files,
-  )
 
   Future<String> getStatus(String bearer, String cid) async {
     var headers = {

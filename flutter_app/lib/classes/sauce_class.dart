@@ -30,6 +30,10 @@ class FileList {
 class VeriSauce {
   final DateTime date; // = DateTime.now();
   final String gps;
-  final String file;
-  const VeriSauce({required this.date, required this.gps, required this.file});
+  final List<String> files;
+  const VeriSauce({required this.date, required this.gps, required this.files});
+
+  // zipIt(){
+  //   return
+  // }
 }
