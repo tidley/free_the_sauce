@@ -6,18 +6,23 @@ tidley
 ## Tool Description
 Smartphone app enabling free and anonymous distribution of immutable GPS-linked data.
 
+Centralised barriers to data sharing are removed throughout this software stack.
+
 ### Pro-Social Technology
 Users of this FOSS (Free and Open Source Software) application can securely archive data using a decentralised storage network called IPFS (**I**nter**P**lanetary **F**ile**S**ystem).
 
-### Easy Access
+### Accessible
 Data can be any file(s) on the smartphone including photos, videos and audio. Once uploaded to IPFS these files are referenced using a unique, immutable link called a **C**ontent-**ID**entifier, or **CID**. 
 
 Several anonymous gateways can be used to retrieve the data using just the CID, e.g. https://w3s.link/ipfs/bafkreidivzimqfqtoqxkrpge6bjyhlvxqs3rhe73owtmdulaxr5do5in7u
 
-### Immutable and Tamper-proof
+### Immutable and Tamper-Resistant
 There is no method to delete data from the network once it's uploaded, and the more it's accessed the more the data are made available via nodes on the IPFS network.
 
 The CID used to retrieve the data is a fingerprint, sha-256 hash of the contents in base32 format, meaning the data cannot be altered without changing the CID.
+
+### Flexible
+Upload time and GPS co-ordinates are included as metadata and other fields can be easily added.
 
 ### Alternatives
 Read text from images on centralised photo-sharing sites: https://imgur.com/a/RKR3S76
@@ -27,8 +32,6 @@ Read text from images on centralised photo-sharing sites: https://imgur.com/a/RK
 - API after free registration at https://web3.storage/login/
     > Github handle / e-mail not required after sign-up so disposable identities can be used.
 
-Purpose:
-Free sharing of data.
 ### From Source
 
 ### From Researcher
