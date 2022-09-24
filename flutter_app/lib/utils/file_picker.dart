@@ -75,13 +75,26 @@ class FilePrep {
     }
   }
 
-  Future<void> uploadArchive(String apiKey, WidgetRef ref) async {
+  Future<void> uploadArchive(
+      String apiKey, WidgetRef ref, dynamic _errorSnackbar, dynamic gps) async {
     List<String> _fileNameList = ref.watch(fileNameListProvider);
+
     if (_fileNameList.isNotEmpty) {
       // Update UI
       ref.watch(cidProvider.state).state = "Please wait...";
-      // Prepare files for upload
       final dateTime = DateTime.now();
+      // Metadata
+      String metaDataFn = "metadata.txt";
+      String metaData =
+          "Time: $dateTime\nLat: ${gps["lat"]}\nLong: ${gps["long"]}";
+      print(metaData);
+      FileFuns().writeFile(metaDataFn, metaData);
+      // Prepare files for upload
+      _fileNameList.add(metaDataFn);
+      await FileFuns().saveLocalZip(_fileNameList);
+      String finalUploadName = await FileFuns().localZipPath();
+      
+
     }
   }
 }

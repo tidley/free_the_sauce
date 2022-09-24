@@ -1,9 +1,9 @@
 import 'package:geolocator/geolocator.dart';
 
 class Gps {
-  late String lat;
-  late String long;
-  isGps() async {
+  late String lat = "0";
+  late String long = "0";
+  hasGps() async {
     bool servicestatus = await Geolocator.isLocationServiceEnabled();
 
     if (servicestatus) {
@@ -22,7 +22,7 @@ class Gps {
         print('Location permissions are permanently denied');
       } else {
         print('GPS Location service is granted');
-        await updatePosition();
+        // await updatePosition();
       }
     } else {
       print("GPS Location permission granted.");

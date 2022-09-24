@@ -4,7 +4,7 @@
 tidley
 
 ## Tool Description
-Smartphone app enabling immutable, free and anonymous distribution of GPS-linked data.
+Smartphone app enabling free and anonymous distribution of immutable GPS-linked data.
 
 ### Pro-Social Technology
 Users of this FOSS (Free and Open Source Software) application can securely archive data using a decentralised storage network called IPFS (**I**nter**P**lanetary **F**ile**S**ystem).
@@ -32,16 +32,10 @@ Free sharing of data.
 ### From Source
 
 ### From Researcher
-- Read data from ipfs.io/ipfs...
-- Download, verify source
-    - Source verifiable using hash of data
-        - in block?
-        - in BTC tx?
-        - 
-    - Source verifiable with GPS data and date
+- Download data from w3s.link/ipfs/**CID**
+- Verify source using GPS and time metadata
 
 - Increased transparency.
-
 
 This sections discusses the purpose and motivation for the tool, and how it addresses a tool need you've identified.
 

@@ -21,7 +21,6 @@ class Home extends ConsumerWidget {
 
     final String _cid = ref.watch(cidProvider);
 
-
     // There must be a better way than "_init()" ?
     Future<void> _init() async {
       // Load file
@@ -39,8 +38,27 @@ class Home extends ConsumerWidget {
       );
     }
 
-    dynamic upload(bool _combineZip, WidgetRef _ref) {
+    dynamic uploadOld(bool _combineZip, WidgetRef _ref) {
       FilePrep().upload(_combineZip, apiKey, _ref, _uploadFail);
+    }
+
+    upload(WidgetRef _ref) async {
+      dynamic gpsLoc = {
+        "lat": "",
+        "long": "",
+      };
+      if (ref.read(gpsProvider.notifier).state) {
+        final gps = Gps();
+        await gps.updatePosition();
+        gpsLoc["lat"] = gps.lat;
+        gpsLoc["long"] = gps.long;
+        String lat = gps.lat;
+        String long = gps.lat;
+        print("lat: $lat");
+        print("long: $long");
+      }
+      print("gpsLoc: $gpsLoc");
+      FilePrep().uploadArchive(apiKey, _ref, _uploadFail, gpsLoc);
     }
 
     void _download() async {
@@ -158,20 +176,20 @@ class Home extends ConsumerWidget {
     //   }
     // }
 
-    CheckboxListTile checkTile() {
+    CheckboxListTile checkGpsTile() {
       return CheckboxListTile(
         title: const Text('GPS'),
         value: ref.read(gpsProvider.notifier).state,
         checkColor: const Color(0xFF000000),
         onChanged: (bool? value) {
-          Gps().isGps();
+          Gps().hasGps();
           ref.read(gpsProvider.notifier).state = value;
         },
         secondary: const Icon(Icons.location_on),
       );
     }
 
-    TextButton uploadButton(bool _multi) {
+    TextButton uploadButton() {
       return TextButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith<Color?>(
@@ -187,13 +205,13 @@ class Home extends ConsumerWidget {
             }
           }),
         ),
-        child: Text(
-          _multi ? zipUpload : upload1by1,
+        child: const Text(
+          uploadText,
           style: btnTextPrimary,
         ),
         onPressed: () {
           if (ref.watch(fileNameListProvider).isNotEmpty) {
-            upload(_multi, ref);
+            upload(ref);
           }
         },
       );
@@ -267,8 +285,8 @@ class Home extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        SizedBox(width: 175, child: checkTile()),
-                        uploadButton(true)
+                        SizedBox(width: 175, child: checkGpsTile()),
+                        uploadButton()
                       ]),
                   const SizedBox(
                     height: 10,
