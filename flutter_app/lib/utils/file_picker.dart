@@ -102,7 +102,12 @@ class FilePrep {
       print(finalUploadName);
       String response = await ApiCalls().uploadFile(apiKey, finalUploadName);
       final _cidDynamic = await json.decode(response)["cid"];
-      FileFuns().appendSauce(finalUploadName.split('/').last, _cidDynamic, ref);
+      int size = await File(finalUploadName).length();
+      print(size);
+      FileFuns().appendSauce(
+          '${(size / 1048576).toStringAsFixed(3)} MB archived',
+          _cidDynamic,
+          ref);
     }
     ref.watch(cidProvider.state).state = "Upload complete";
   }

@@ -76,7 +76,7 @@ class Home extends ConsumerWidget {
               SnackBar(
                 backgroundColor: size > 0 ? Colors.green : Colors.red,
                 content: Text((size > 0
-                    ? '${(await _appendSauce.length() / 1048576).toStringAsFixed(3)} MB saved to Downloads.'
+                    ? '${(size / 1048576).toStringAsFixed(3)} MB saved to Downloads.'
                     : 'Failed to save file: Please check permissions.')),
               ),
             );
