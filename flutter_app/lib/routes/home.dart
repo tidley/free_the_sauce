@@ -61,7 +61,7 @@ class Home extends ConsumerWidget {
       FilePrep().uploadArchive(apiKey, _ref, _uploadFail, gpsLoc);
     }
 
-    void _download() async {
+    void _downloadOLD() async {
       if (ref.read(downloadProvider) != "") {
         if (await Permission.storage.request().isGranted) {
           ref.watch(cidProvider.state).state = "Please wait...";
@@ -84,6 +84,31 @@ class Home extends ConsumerWidget {
           } else {
             ref.watch(cidProvider.state).state = invalidRequest;
           }
+        } else {
+          openAppSettings();
+        }
+      }
+    }
+
+    void _download() async {
+      if (ref.read(downloadProvider) != "") {
+        if (await Permission.storage.request().isGranted) {
+          ref.watch(cidProvider.state).state = "Please wait...";
+          File _appendSauce =
+              await ApiCalls().getDataDirect(ref.read(downloadProvider));
+          int size = await _appendSauce.length();
+          print(size);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: size > 0 ? Colors.green : Colors.red,
+              content: Text((size > 0
+                  ? '${(await _appendSauce.length() / 1048576).toStringAsFixed(3)} MB saved to Downloads.'
+                  : 'Failed to save file: Please check permissions.')),
+            ),
+          );
+          ref.watch(cidProvider.state).state = downloadComplete;
+
+          print("testing");
         } else {
           openAppSettings();
         }

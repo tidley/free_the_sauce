@@ -92,7 +92,10 @@ class FilePrep {
       // Prepare files for upload
       ref
           .read(fileNameListProvider.notifier)
-          .add(await FileFuns().getLocalPath() + '/' + metaDataFn);
+          .add((await FileFuns().getLocalPath()) + '/' + metaDataFn);
+      _fileNameList = ref.watch(fileNameListProvider);
+      print("_fileNameList");
+      print(_fileNameList);
       // Compress data and store
       await FileFuns().saveLocalZip(_fileNameList);
       String finalUploadName = await FileFuns().localZipPath();

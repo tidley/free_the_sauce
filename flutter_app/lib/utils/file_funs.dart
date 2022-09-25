@@ -111,12 +111,23 @@ class FileFuns {
     String _downloadsPath = await DirInfo().downloadsPath();
     String fn = _sourceData.filename.replaceAll(' ', '_');
     fn = _sourceData.filename.replaceAll(':', '-');
-    File _sauce = await File(
-        '$_downloadsPath/$fn')
+    File _sauce = await File('$_downloadsPath/$fn')
         // '$_downloadsPath/file.zip')
         .create();
     Uint8List _decodedbytes = base64.decode(_sourceData.rawData);
     return await _sauce.writeAsBytes(_decodedbytes);
+  }
+
+  Future<File> responseToDownload(HttpClientResponse response) async {
+    String _downloadsPath = await DirInfo().downloadsPath();
+    String fn = (DateTime.now().toIso8601String());
+    fn = fn.replaceAll(':', '-');
+    fn = '${(fn.split('.').first)}.zip';
+    print(fn);
+    File _sauce = await File('$_downloadsPath/$fn').create();
+    await response.pipe(_sauce.openWrite());
+    // File file = await FileFuns().fileLocalOpen('$_downloadsPath/$fn');
+    return _sauce;
   }
 
   void appendSauce(String _name, String _cid, WidgetRef ref) async {
